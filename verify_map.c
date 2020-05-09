@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 16:18:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/04/29 19:21:37 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/01 11:23:01 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,26 @@ int				is_wall(char **map, int w, int h, char currentl)
 	if (w > 0)
 	{
 		if (map[h][w - 1] == '0' || map[h][w + 1] == '0')
-			return (0);//map error, 
+			return (ft_error("map error, wall missing"));
 		if (currentl == 'a' || currentl == '-')
 			if (map[h - 1][w] == '0' || map[h - 1][w - 1] == '0'
 					|| map[h - 1][w + 1] == '0')
-				return (0);//map error, 
+				return (ft_error("map error, wall missing"));
 		if (currentl == 'a' || currentl == '+')
 			if (map[h + 1][w] == '0' || map[h + 1][w - 1] == '0'
 					|| map[h + 1][w + 1] == '0')
-				return (0);//map error, 
+				return (ft_error("map error, wall missing"));
 	}
 	else
 	{
 		if (map[h][w + 1] == '0')
-			return (0);//map error, 
+			return (ft_error("map error, wall missing"));
 		if (currentl == 'a' || currentl == '-')
 			if (map[h - 1][w] == '0' || map[h - 1][w + 1] == '0')
-				return (0);//map error, 
+				return (ft_error("map error, wall missing"));
 		if (currentl == 'a' || currentl == '+')
 			if (map[h + 1][w] == '0' || map[h + 1][w + 1] == '0')
-				return (0);//map error, 
+				return (ft_error("map error, wall missing"));
 	}
 	return (1);
 }

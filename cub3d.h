@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/04/29 16:31:29 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/08 16:57:16 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,58 @@
 # define H	1
 # define O	2
 
-typedef struct	s_gnl
-{
-	char	*line;
-	int		fd;
-	int		ret;
-	int		nwline;
-}				t_gnl;
+# define MLXK_ESC 53
+# define MLXK_Z 13
+# define MLXK_Q 0
+# define MLXK_S 1
+# define MLXK_D 2
+# define MLXK_LEFT 123
+# define MLXK_RIGHT 124
 
-typedef struct	s_cubfile
+typedef struct		s_gnl
 {
-	int		colors[2][3];
-	int		res[2];
-	char	*tx_path[6];
-	int		nb_elements;
-	int		save;
-	char	**map;
-	int		d_map[2];
-	int		map_pos[3];
-}				t_cubfile;
+	char			*line;
+	int				fd;
+	int				ret;
+	int				nwline;
+}					t_gnl;
+
+typedef union		s_color
+{
+	unsigned int	color;
+	struct
+	{
+		unsigned char		c[3];
+		unsigned char		alpha;
+	}				rgb;
+}					t_color;
+
+typedef struct		s_isqur
+{
+	int				w;
+	int				h;
+}					t_isqur;
+
+typedef struct		s_dvector
+{
+	double			x;
+	double			y;
+	double			a;
+}					t_dvec;
+
+typedef struct		s_cubfile
+{
+	t_color			colors[2];
+	t_isqur			res;
+	char			*tx_path[6];
+	int				nb_elements;
+	int				save;
+	int				newmove;
+	t_isqur			d_map;
+	char			**map;
+	t_dvec			pos;
+	int				fd;
+}					t_cubfile;
 
 /*
 **	colors[0 to 1] -> Floor, Ceiling; [0 to 2] -> r, g, b;
@@ -61,8 +94,17 @@ typedef struct	s_cubfile
 **	map_pos[0 to 2] -> W, H, Orientation;
 */
 
+typedef struct	s_graphic
+{
+	void	*mlx_p;
+	void	*win_p;
+	void	*img_p;
+}				t_graphic;
+
 int				extract_cub_file(int ac, char **av, t_cubfile *cbfile);
 int				handle_map(t_cubfile *cbfile, t_gnl *gnl, char *file);
 int				verify_map(char **map);
+int				ft_error(const char *error);
+int				key_event(int key, t_cubfile *cub);
 
 #endif
