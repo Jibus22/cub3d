@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:11:10 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/08 14:00:31 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/09 12:43:11 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,15 @@ int				map_measuring(t_cubfile *cbfile, t_gnl *gnl)
 double			char_to_rad(char c)
 {
 	if (c == 'S')
-		return (1.5 * M_PI);
+		return (THREEQUARTER_ANGLE);
 	else if (c == 'N')
-		return (M_PI_2);
+		return (RIGHT_ANGLE);
 	else if (c == 'E')
 		return (0);
 	else if (c == 'W')
-		return (M_PI);
+		return (FLAT_ANGLE);
 	else
-		return (M_PI_4);
+		return (-1);
 }
 
 int				map_cpy(t_cubfile *cbfile, char *line, int h)

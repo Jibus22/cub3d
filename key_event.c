@@ -6,18 +6,44 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/08 16:53:41 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/08 18:01:12 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/10 11:48:56 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void			rotate_mv(t_dvec *move, char way)
+void			get_angle_quarter(t_cubfile *cub, t_dvec *move)
+{
+	if (move->a < RIGHT_ANGLE)
+		cub->quarter = 1;
+	else if (move->a < FLAT_ANGLE)
+		cub->quarter = 2;
+	else if (move->a < THREEQUARTER_ANGLE)
+		cub->quarter = 3;
+	else if (move->a < CIRCLE_ANGLE)
+		cub->quarter = 4;
+	else
+		cub->quarter = 5;
+}
+
+void			rotate_mv(t_cubfile *cub, t_dvec *move, char way)
 {
 	if (way == 'l')
-		move->a += M_PI / 12;
+		move->a += PLAYER_ROTATE;
 	else
-		move->a -= M_PI / 12;
+		move->a -= PLAYER_ROTATE;
+	if ((move->a > CIRCLE_A_LOW && move->a < CIRCLE_A_HIH)
+			|| (move->a < 0.0000001 && move->a > 0))
+		move->a = 0;
+	else if (move->a < 0)
+		move->a = TWO_H_FORTY_FIVE_A;
+	else if (move->a > RIGHT_A_LOW && move->a < RIGHT_A_HIH)
+		move->a = RIGHT_ANGLE;
+	else if (move->a > FLAT_A_LOW && move->a < FLAT_A_HIH)
+		move->a = FLAT_ANGLE;
+	else if (move->a > THREEQUARTER_A_LOW && move->a < THREEQUARTER_A_HIH)
+		move->a = THREEQUARTER_ANGLE;
+	get_angle_quarter(cub, move);
 }
 
 void			central_mv(t_dvec *move, char way)
@@ -54,9 +80,9 @@ int				plyr_move(t_cubfile *cub, char c)
 
 	move = cub->pos;
 	if (c == 'l')
-		rotate_mv(&move, 'l');
+		rotate_mv(cub, &move, 'l');
 	else if (c == 'r')
-		rotate_mv(&move, 'r');
+		rotate_mv(cub, &move, 'r');
 	else if (c == 'z')
 		central_mv(&move, 'z');
 	else if (c == 's')

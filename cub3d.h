@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/08 16:57:16 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/10 18:38:55 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,22 @@
 # define MLXK_LEFT 123
 # define MLXK_RIGHT 124
 
+# define PLAYER_ROTATE 0.261799387799149407829446545292739756405353546142578125
+
+# define RIGHT_ANGLE 1.5707963267948965579989817342720925807952880859375
+# define RIGHT_A_HIH 1.5707963267948970
+# define RIGHT_A_LOW 1.5707963267948960
+# define FLAT_ANGLE 3.141592653589793115997963468544185161590576171875
+# define FLAT_A_HIH 3.1415926535897940
+# define FLAT_A_LOW 3.1415926535897930
+# define THREEQUARTER_ANGLE 4.7123889803846896739969452028162777423858642578125
+# define THREEQUARTER_A_HIH 4.7123889803846900
+# define THREEQUARTER_A_LOW 4.7123889803846890
+# define CIRCLE_ANGLE 6.28318530717958623199592693708837032318115234375
+# define CIRCLE_A_HIH 6.283185307179590
+# define CIRCLE_A_LOW 6.283185307179580
+# define TWO_H_FORTY_FIVE_A 6.021385919380435325365397147834300994873046875
+
 typedef struct		s_gnl
 {
 	char			*line;
@@ -50,7 +66,7 @@ typedef struct		s_gnl
 	int				nwline;
 }					t_gnl;
 
-typedef union		s_color
+typedef union
 {
 	unsigned int	color;
 	struct
@@ -73,6 +89,21 @@ typedef struct		s_dvector
 	double			a;
 }					t_dvec;
 
+typedef struct	s_img
+{
+	void	*img;
+	char	*adr;
+	int		depth;
+	int		size_line;
+	int		endian;
+}				t_img;
+
+typedef struct	s_mlx
+{
+	void	*mlx;
+	void	*win;
+}				t_mlx;
+
 typedef struct		s_cubfile
 {
 	t_color			colors[2];
@@ -81,10 +112,13 @@ typedef struct		s_cubfile
 	int				nb_elements;
 	int				save;
 	int				newmove;
+	int				alternate;
+	double			quarter;
 	t_isqur			d_map;
 	char			**map;
 	t_dvec			pos;
-	int				fd;
+	t_mlx			mlx;
+	t_img			img[2];
 }					t_cubfile;
 
 /*
@@ -94,17 +128,11 @@ typedef struct		s_cubfile
 **	map_pos[0 to 2] -> W, H, Orientation;
 */
 
-typedef struct	s_graphic
-{
-	void	*mlx_p;
-	void	*win_p;
-	void	*img_p;
-}				t_graphic;
-
 int				extract_cub_file(int ac, char **av, t_cubfile *cbfile);
 int				handle_map(t_cubfile *cbfile, t_gnl *gnl, char *file);
 int				verify_map(char **map);
 int				ft_error(const char *error);
 int				key_event(int key, t_cubfile *cub);
+int				cub_rendering(t_cubfile *cub);
 
 #endif
