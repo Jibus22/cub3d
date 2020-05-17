@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:11:10 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/09 12:43:11 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/12 19:57:30 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,16 @@ int				map_measuring(t_cubfile *cbfile, t_gnl *gnl)
 ** before quiting it checks if the last character is space, 1 or 2.
 */
 
-double			char_to_rad(char c)
+double			char_to_angle(char c)
 {
 	if (c == 'S')
-		return (THREEQUARTER_ANGLE);
+		return (270);
 	else if (c == 'N')
-		return (RIGHT_ANGLE);
+		return (90);
 	else if (c == 'E')
 		return (0);
 	else if (c == 'W')
-		return (FLAT_ANGLE);
+		return (180);
 	else
 		return (-1);
 }
@@ -94,7 +94,7 @@ int				map_cpy(t_cubfile *cbfile, char *line, int h)
 			cbfile->map[h][w] = *line;
 			cbfile->pos.x = w + 0.5;
 			cbfile->pos.y = h + 0.5;
-			cbfile->pos.a = char_to_rad(*line);
+			cbfile->pos.a = char_to_angle(*line);
 		}
 		else
 			return (ft_error("map error, wong map character"));

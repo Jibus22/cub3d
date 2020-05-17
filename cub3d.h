@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/10 18:38:55 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/17 03:16:45 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,9 @@
 # define MLXK_LEFT 123
 # define MLXK_RIGHT 124
 
-# define PLAYER_ROTATE 0.261799387799149407829446545292739756405353546142578125
-
-# define RIGHT_ANGLE 1.5707963267948965579989817342720925807952880859375
-# define RIGHT_A_HIH 1.5707963267948970
-# define RIGHT_A_LOW 1.5707963267948960
-# define FLAT_ANGLE 3.141592653589793115997963468544185161590576171875
-# define FLAT_A_HIH 3.1415926535897940
-# define FLAT_A_LOW 3.1415926535897930
-# define THREEQUARTER_ANGLE 4.7123889803846896739969452028162777423858642578125
-# define THREEQUARTER_A_HIH 4.7123889803846900
-# define THREEQUARTER_A_LOW 4.7123889803846890
-# define CIRCLE_ANGLE 6.28318530717958623199592693708837032318115234375
-# define CIRCLE_A_HIH 6.283185307179590
-# define CIRCLE_A_LOW 6.283185307179580
-# define TWO_H_FORTY_FIVE_A 6.021385919380435325365397147834300994873046875
+# define PLAYER_ROTATE 10
+# define TO_RAD 0.0174532925199432954743716805978692718781530857086181640625
+# define DCAM_DIVIDER 1.1547005383792512400731311572599224746227264404296875
 
 typedef struct		s_gnl
 {
@@ -86,8 +74,14 @@ typedef struct		s_dvector
 {
 	double			x;
 	double			y;
-	double			a;
 }					t_dvec;
+
+typedef struct		s_position
+{
+	double			x;
+	double			y;
+	double			a;
+}					t_pos;
 
 typedef struct	s_img
 {
@@ -104,6 +98,21 @@ typedef struct	s_mlx
 	void	*win;
 }				t_mlx;
 
+typedef struct		s_cam
+{
+	double			d_cam;
+	double			angle_gap;
+}					t_cam;
+
+typedef struct		s_dda_ray
+{
+	t_dvec			raystartx;
+	t_dvec			raystarty;
+	t_dvec			raystepx;
+	t_dvec			raystepy;
+	int				hit;
+}					t_dda_ray;
+
 typedef struct		s_cubfile
 {
 	t_color			colors[2];
@@ -116,9 +125,10 @@ typedef struct		s_cubfile
 	double			quarter;
 	t_isqur			d_map;
 	char			**map;
-	t_dvec			pos;
+	t_pos			pos;
 	t_mlx			mlx;
 	t_img			img[2];
+	t_cam			cam;
 }					t_cubfile;
 
 /*
@@ -132,7 +142,18 @@ int				extract_cub_file(int ac, char **av, t_cubfile *cbfile);
 int				handle_map(t_cubfile *cbfile, t_gnl *gnl, char *file);
 int				verify_map(char **map);
 int				ft_error(const char *error);
+
 int				key_event(int key, t_cubfile *cub);
 int				cub_rendering(t_cubfile *cub);
+void			image_drawing(t_cubfile *cub);
+void			ft_pixel_put(t_img *img, int x, int y, unsigned int color);
+t_dvec			x_rayone(double x, double angle, t_cubfile *cub);
+t_dvec			x_raytwo(double x, double angle, t_cubfile *cub);
+t_dvec			x_raythree(double x, double angle, t_cubfile *cub);
+t_dvec			x_rayfour(double x, double angle, t_cubfile *cub);
+t_dvec			y_rayone(double y, double angle, t_cubfile *cub);
+t_dvec			y_raytwo(double y, double angle, t_cubfile *cub);
+t_dvec			y_raythree(double y, double angle, t_cubfile *cub);
+t_dvec			y_rayfour(double y, double angle, t_cubfile *cub);
 
 #endif

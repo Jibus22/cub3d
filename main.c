@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/10 18:53:03 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/17 02:34:36 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,11 @@ void			*cubd(t_cubfile *cub, char *av)
 	cub->newmove = 1;
 	cub->alternate = 0;
 	cub->img[1].img = NULL;
+	cub->cam.d_cam = fabs(cub->res.w / DCAM_DIVIDER);
+	cub->cam.angle_gap = 60 / (double)(cub->res.w);
+	cub->pos.a = 45;
+	printf("anglegap : %10.5f\n", cub->cam.angle_gap);
 	mlx_key_hook(cub->mlx.win, key_event, cub);
-	/*while (e-- > 200)
-	{
-		while (r-- > 200)
-			mlx_pixel_put(mlx.mlx_p, mlx.win_p, e, r, cub->colors[0].color);
-		r = 250;
-	}*/
-	/*if (!(mlx.img_p = mlx_xpm_file_to_image(mlx.mlx_p, cub->tx_path[4],
-	//				&(cub->res[0]), &(cub->res[1]))))
-	//	return (NULL);
-	mlx_put_image_to_window(mlx.mlx_p, mlx.win_p, mlx.img_p, 0, 0);*/
 	mlx_loop_hook(cub->mlx.mlx, cub_rendering, cub);
 	mlx_loop(cub->mlx.mlx);
 	return ((void*)1);
@@ -72,8 +66,6 @@ int				main(int ac, char **av)
 	//printcubdata(&cbfile);
 	if (!cubd(&cbfile, av[1]))
 		return (0);
-	//printf("%.58f\n%.58f\n%.58f\n%.58f\n%.58f\n", ((M_PI + M_PI_2) + (M_PI / 12) + (M_PI / 12) + (M_PI / 12) + (M_PI / 12) + (M_PI / 12)), (2 * M_PI - (M_PI / 12)),
-	//		(M_PI + (M_PI / 2)), (1.5 * M_PI + (2 * (M_PI / 12))), (20 * (M_PI / 12)));
 	//system("leaks a.out");
 	return (0);
 }
