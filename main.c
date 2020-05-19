@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/17 20:09:36 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/19 12:46:59 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,13 @@ void			*cubd(t_cubfile *cub, char *av)
 		return (NULL);
 	if (!(cub->mlx.win = mlx_new_window(cub->mlx.mlx, cub->res.w, cub->res.h, av)))
 		return (NULL);
-	cub->newmove = 1;
-	cub->alternate = 0;
+	cub->newmove = 1;//permet de lancer la premiere image sans pour autant appuyer sur une touche
+	cub->alternate = 0;//variable alterne entre 0 et 1 pour appeler et supprimer les buffer img
 	cub->img[1].img = NULL;
-	cub->cam.d_cam = fabs(cub->res.w / DCAM_DIVIDER);
-	cub->cam.angle_gap = 60 / (double)(cub->res.w);
-	printf("anglegap : %.58f\n", cub->cam.angle_gap);
-	mlx_key_hook(cub->mlx.win, key_event, cub);
-	mlx_loop_hook(cub->mlx.mlx, cub_rendering, cub);
+	cub->cam.d_cam = fabs(cub->res.w / DCAM_DIVIDER);//distance player-ecran pour garder 60fov
+	cub->cam.angle_gap = PLAYER_FOV / (double)(cub->res.w);//angle entre chaque pixel /raycasts
+	mlx_key_hook(cub->mlx.win, key_event, cub);//met newmove a 1 et modifie t_pos
+	mlx_loop_hook(cub->mlx.mlx, cub_rendering, cub);//Si newmove==1,crea nvlle img et nvx calcul
 	mlx_loop(cub->mlx.mlx);
 	return ((void*)1);
 }

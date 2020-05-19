@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/19 12:31:54 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/19 14:28:37 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@
 # define MLXK_LEFT	123
 # define MLXK_RIGHT	124
 
-# define PLAYER_FOV	60.0
+# define PLAYER_FOV	66.0
 # define PLAYER_ROTATE	3.0
 # define PLAYER_MOVE	0.2
 # define TO_RAD	0.0174532925199432954743716805978692718781530857086181640625
-# define DCAM_DIVIDER	1.1547005383792512400731311572599224746227264404296875
+//# define DCAM_DIVIDER	1.1547005383792512400731311572599224746227264404296875
+# define DCAM_DIVIDER	(2 * tan((PLAYER_FOV / 2) * TO_RAD))
 
 typedef struct		s_gnl
 {
