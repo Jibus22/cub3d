@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 15:57:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/17 02:58:53 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/19 12:33:11 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int				cub_rendering(t_cubfile *cub)
 {
 	int			col;
 	double		angle;
+	double		anglecam;
 	t_dvec		xvec;
 	t_dvec		yvec;
 	double		xlen;
@@ -67,6 +68,9 @@ int				cub_rendering(t_cubfile *cub)
 	double		h_col_low;
 	int			e;
 
+	h_col_hi = 0;
+	h_col_low = 0;
+	h_col = 0;
 	col = -1;
 	if (cub->newmove == 1)
 	{
@@ -74,40 +78,46 @@ int				cub_rendering(t_cubfile *cub)
 		if (!create_new_image(cub))
 			return (0);
 		//image_drawing(cub);
-		angle = cub->pos.a + 30;
-		printf("pos.x : %4.2f || pos.y %4.2f\n\n", cub->pos.x, cub->pos.y);
+		angle = cub->pos.a + 30.0;
+		anglecam = angle - angle + 30;
+		printf("pos.x : %4.2f || pos.y %4.2f || anglestart %4.2f\n\n",
+				cub->pos.x, cub->pos.y, angle);
 		while (++col < cub->res.w)
 		{
+			if (angle < 0.0)
+				angle += 360.0;
+			else if (angle >= 360.0)
+				angle -= 360.0;
 			e = -1;
-			if (angle < 90)
+			if (angle < 90.0)
 			{
 				xvec = x_rayone((ceil(cub->pos.x) - cub->pos.x), angle * TO_RAD, cub);
 				yvec = y_rayone(cub->pos.y - floor(cub->pos.y), angle * TO_RAD, cub);
 			}
-			else if (angle < 180)
+			else if (angle < 180.0)
 			{
 				xvec = x_raytwo(cub->pos.x - floor(cub->pos.x), angle * TO_RAD, cub);
 				yvec = y_raytwo(cub->pos.y - floor(cub->pos.y), angle * TO_RAD, cub);
 			}
-			else if (angle < 270)
+			else if (angle < 270.0)
 			{
-				xvec = x_raythree(cub->pos.x - floor(cub->pos.x), angle * TO_RAD, cub);
 				yvec = y_raythree(ceil(cub->pos.y) - cub->pos.y, angle * TO_RAD, cub);
+				xvec = x_raythree(cub->pos.x - floor(cub->pos.x), angle * TO_RAD, cub);
 			}
-			else if (angle < 360)
+			else if (angle < 360.0)
 			{
-				xvec = x_rayfour((ceil(cub->pos.x) - cub->pos.x), angle * TO_RAD, cub);
 				yvec = y_rayfour(ceil(cub->pos.y) - cub->pos.y, angle * TO_RAD, cub);
+				xvec = x_rayfour((ceil(cub->pos.x) - cub->pos.x), angle * TO_RAD, cub);
 			}
-			angle -= cub->cam.angle_gap;
 			xlen = hypot(xvec.x - cub->pos.x, cub->pos.y - xvec.y);
 			ylen = hypot(yvec.x - cub->pos.x, cub->pos.y - yvec.y);
 			if (xlen < ylen)
 			{
-				printf("xvex.x : %5.2f || xvec.y : %5.2f ||", xvec.x, xvec.y);
-				h_col = cub->res.h / (0.3689 * xlen);
-				h_col_hi = (cub->res.h - h_col) / 2;
-				h_col_low = (cub->res.h + h_col) / 2;
+				xlen *= cos(anglecam * TO_RAD);
+				if ((h_col = ((double)cub->res.h / (1.0 * xlen))) > (double)cub->res.h)
+					h_col = (double)cub->res.h;
+				h_col_hi = ((double)cub->res.h - h_col) / 2.0;
+				h_col_low = ((double)cub->res.h + h_col) / 2.0;
 				while (++e < h_col_hi)
 					ft_pixel_put(&(cub->img[0]), col, e, cub->colors[0].color);
 				while (e < h_col_low)
@@ -120,14 +130,14 @@ int				cub_rendering(t_cubfile *cub)
 					ft_pixel_put(&(cub->img[0]), col, e, 18276);
 					e++;
 				}
-				//ft_pixel_put(&(cub->img[0]), xvec.x, xvec.y, cub->colors[1].color);
 			}
 			else
 			{
-				//printf("yvex.x : %5.2f || yvec.y : %5.2f ||", yvec.x, yvec.y);
-				h_col = cub->res.h / (0.3689 * ylen);
-				h_col_hi = (cub->res.h - h_col) / 2;
-				h_col_low = (cub->res.h + h_col) / 2;
+				ylen *= cos(anglecam * TO_RAD);
+				if ((h_col = ((double)cub->res.h / (1.0 * ylen))) > (double)cub->res.h)
+					h_col = (double)cub->res.h;
+				h_col_hi = ((double)cub->res.h - h_col) / 2.0;
+				h_col_low = ((double)cub->res.h + h_col) / 2.0;
 				while (++e < h_col_hi)
 					ft_pixel_put(&(cub->img[0]), col, e, cub->colors[0].color);
 				while (e < h_col_low)
@@ -140,11 +150,9 @@ int				cub_rendering(t_cubfile *cub)
 					ft_pixel_put(&(cub->img[0]), col, e, 18276);
 					e++;
 				}
-				//ft_pixel_put(&(cub->img[0]), yvec.x, yvec.y, cub->colors[1].color);
 			}
-			printf(" col : %d || angle : %5.2f ||\n", col, angle);
-			//printf("xlen : %5.2f || ylen : %5.2f || col : %d || angle : %5.2f ||\n",
-			//		xlen, ylen, col, angle);
+			angle -= cub->cam.angle_gap;
+			anglecam -= cub->cam.angle_gap;
 		}
 		render_image(cub);
 		destroy_old_image(cub);

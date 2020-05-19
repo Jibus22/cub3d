@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/17 02:34:36 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/17 20:09:36 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ void			*cubd(t_cubfile *cub, char *av)
 	cub->img[1].img = NULL;
 	cub->cam.d_cam = fabs(cub->res.w / DCAM_DIVIDER);
 	cub->cam.angle_gap = 60 / (double)(cub->res.w);
-	cub->pos.a = 45;
-	printf("anglegap : %10.5f\n", cub->cam.angle_gap);
+	printf("anglegap : %.58f\n", cub->cam.angle_gap);
 	mlx_key_hook(cub->mlx.win, key_event, cub);
 	mlx_loop_hook(cub->mlx.mlx, cub_rendering, cub);
 	mlx_loop(cub->mlx.mlx);

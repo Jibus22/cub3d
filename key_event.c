@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/08 16:53:41 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/12 21:18:36 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/19 11:20:40 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void			rotate_mv(t_cubfile *cub, t_pos *move, char way)
 		move->a += PLAYER_ROTATE;
 	else
 		move->a -= PLAYER_ROTATE;
-	if (move->a < 0)
-		move->a = 350;
-	else if (move->a == 360)
-		move->a = 0;
+	if (move->a < 0.0)
+		move->a += 360.0;
+	else if (move->a >= 360.0)
+		move->a -= 360.0;
 	get_angle_quarter(cub, move);
 }
 
@@ -43,13 +43,13 @@ void			central_mv(t_pos *move, char way)
 {
 	if (way == 'z')
 	{
-		move->x += 0.5 * cos(move->a * TO_RAD);
-		move->y -= 0.5 * sin(move->a * TO_RAD);
+		move->x += PLAYER_MOVE * cos(move->a * TO_RAD);
+		move->y -= PLAYER_MOVE * sin(move->a * TO_RAD);
 	}
 	else
 	{
-		move->x -= 0.5 * cos(move->a * TO_RAD);
-		move->y += 0.5 * sin(move->a * TO_RAD);
+		move->x -= PLAYER_MOVE * cos(move->a * TO_RAD);
+		move->y += PLAYER_MOVE * sin(move->a * TO_RAD);
 	}
 }
 
@@ -57,13 +57,13 @@ void			lateral_mv(t_pos *move, char way)
 {
 	if (way == 'q')
 	{
-		move->x += 0.5 * cos((move->a + 90) * TO_RAD);
-		move->y -= 0.5 * sin((move->a + 90) * TO_RAD);
+		move->x += PLAYER_MOVE * cos((move->a + 90.0) * TO_RAD);
+		move->y -= PLAYER_MOVE * sin((move->a + 90.0) * TO_RAD);
 	}
 	else
 	{
-		move->x -= 0.5 * cos((move->a + 90) * TO_RAD);
-		move->y += 0.5 * sin((move->a + 90) * TO_RAD);
+		move->x -= PLAYER_MOVE * cos((move->a + 90.0) * TO_RAD);
+		move->y += PLAYER_MOVE * sin((move->a + 90.0) * TO_RAD);
 	}
 }
 

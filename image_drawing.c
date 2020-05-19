@@ -6,17 +6,17 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 20:27:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/17 02:59:15 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/17 19:47:10 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void			printvector(t_dda_ray *dda, t_cubfile *cub)
+/*void			printvector(t_dda_ray *dda, t_cubfile *cub)
 {
 	printf("raystartx.x : %f\nraystartx.y : %f\nangle : %.2f\n", 
 	dda->raystartx.x, dda->raystartx.y, cub->pos.a);
-}
+}*/
 
 t_dvec			minvec(t_dvec xvec, t_dvec yvec, t_cubfile *cub)
 {

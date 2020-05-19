@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/17 03:16:45 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/19 12:31:54 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,19 @@
 # define H	1
 # define O	2
 
-# define MLXK_ESC 53
-# define MLXK_Z 13
-# define MLXK_Q 0
-# define MLXK_S 1
-# define MLXK_D 2
-# define MLXK_LEFT 123
-# define MLXK_RIGHT 124
+# define MLXK_ESC	53
+# define MLXK_Z	13
+# define MLXK_Q	0
+# define MLXK_S	1
+# define MLXK_D	2
+# define MLXK_LEFT	123
+# define MLXK_RIGHT	124
 
-# define PLAYER_ROTATE 10
-# define TO_RAD 0.0174532925199432954743716805978692718781530857086181640625
-# define DCAM_DIVIDER 1.1547005383792512400731311572599224746227264404296875
+# define PLAYER_FOV	60.0
+# define PLAYER_ROTATE	3.0
+# define PLAYER_MOVE	0.2
+# define TO_RAD	0.0174532925199432954743716805978692718781530857086181640625
+# define DCAM_DIVIDER	1.1547005383792512400731311572599224746227264404296875
 
 typedef struct		s_gnl
 {
@@ -103,15 +105,6 @@ typedef struct		s_cam
 	double			d_cam;
 	double			angle_gap;
 }					t_cam;
-
-typedef struct		s_dda_ray
-{
-	t_dvec			raystartx;
-	t_dvec			raystarty;
-	t_dvec			raystepx;
-	t_dvec			raystepy;
-	int				hit;
-}					t_dda_ray;
 
 typedef struct		s_cubfile
 {
