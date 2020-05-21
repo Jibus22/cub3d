@@ -6,133 +6,121 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 17:43:14 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/21 16:43:45 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/21 17:33:14 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
+#include "cub3d.h"
 
 /*
-** vertic means y ray (which stops every y grid) & horizont means x ray
+** y_axis means y ray (which stops every y grid) & x_axis means x ray
 ** (which stops every x grid)
 */
 
-double			rayone(double vertic_y, double horizont_x, double angle, t_cubfile *cub)
+double			rayone(double y_axis_y,
+		double x_axis_x, double angle, t_cubfile *cub)
 {
-	double		vertic_x;
-	double		vertic_xa;
-	double		horizont_y;
-	double		horizont_ya;
-	double		vertic_ray_len;
-	double		horizont_ray_len;
+	t_y_axis	y_axis;
+	t_x_axis	x_axis;
 
-	if ((vertic_x = cub->pos.x + (vertic_y / tan(angle))) > 40000.0)
-		vertic_x = 4000.0;
-	vertic_xa = 1.0 / tan(angle);
-	vertic_y = cub->pos.y - vertic_y;
-	while (vertic_x < (double)cub->d_map.w &&
-			cub->map[(int)(vertic_y - 0.1)][(int)vertic_x] != '1'
-			&& (vertic_y -= 1.0))
-		vertic_x += vertic_xa;
-	vertic_ray_len = hypot(vertic_x - cub->pos.x, cub->pos.y - vertic_y);
-	if ((horizont_y = cub->pos.y - (horizont_x * tan(angle))) < 0.0)
-		horizont_y = -4000.0;
-	horizont_ya = tan(angle);
-	horizont_x += cub->pos.x;
-	while ((int)horizont_y > 0 &&
-			cub->map[(int)horizont_y][(int)horizont_x] != '1' && (horizont_x += 1.0))
-		horizont_y -= horizont_ya;
-	horizont_ray_len = hypot(horizont_x - cub->pos.x, cub->pos.y - horizont_y);
-	return (vertic_ray_len < horizont_ray_len ? vertic_ray_len : horizont_ray_len);
+	if ((y_axis.x = cub->pos.x + (y_axis_y / tan(angle))) > 40000.0)
+		y_axis.x = 4000.0;
+	y_axis.xa = 1.0 / tan(angle);
+	y_axis_y = cub->pos.y - y_axis_y;
+	while (y_axis.x < (double)cub->d_map.w &&
+			cub->map[(int)(y_axis_y - 0.1)][(int)y_axis.x] != '1'
+			&& (y_axis_y -= 1.0))
+		y_axis.x += y_axis.xa;
+	y_axis.ray_len = hypot(y_axis.x - cub->pos.x, cub->pos.y - y_axis_y);
+	if ((x_axis.y = cub->pos.y - (x_axis_x * tan(angle))) < 0.0)
+		x_axis.y = -4000.0;
+	x_axis.ya = tan(angle);
+	x_axis_x += cub->pos.x;
+	while ((int)x_axis.y > 0 &&
+			cub->map[(int)x_axis.y][(int)x_axis_x] != '1' && (x_axis_x += 1.0))
+		x_axis.y -= x_axis.ya;
+	x_axis.ray_len = hypot(x_axis_x - cub->pos.x, cub->pos.y - x_axis.y);
+	return (y_axis.ray_len < x_axis.ray_len ? y_axis.ray_len : x_axis.ray_len);
 }
 
-double			raytwo(double vertic_y, double horizont_x, double angle, t_cubfile *cub)
+double			raytwo(double y_axis_y,
+		double x_axis_x, double angle, t_cubfile *cub)
 {
-	double		vertic_x;
-	double		vertic_xa;
-	double		horizont_y;
-	double		horizont_ya;
-	double		vertic_ray_len;
-	double		horizont_ray_len;
+	t_y_axis	y_axis;
+	t_x_axis	x_axis;
 
-	if ((vertic_x = cub->pos.x + (vertic_y / tan(angle))) < 0.0)
-		vertic_x = -4000.0;
-	vertic_xa = 1.0 / tan(angle);
-	vertic_y = cub->pos.y - vertic_y;
-	while (vertic_x > 0.0 &&
-			cub->map[(int)(vertic_y - 0.1)][(int)vertic_x] != '1'
-			&& (vertic_y -= 1.0))
-		vertic_x += vertic_xa;
-	vertic_ray_len = hypot(vertic_x - cub->pos.x, cub->pos.y - vertic_y);
-	if ((horizont_y = cub->pos.y + (horizont_x * tan(angle))) < 0.0)
-		horizont_y = -4000.0;
-	horizont_ya = tan(angle);
-	horizont_x = cub->pos.x - horizont_x;
-	while ((int)horizont_y > 0.0 &&
-			cub->map[(int)horizont_y][(int)(horizont_x - 0.1)] != '1'
-			&& (horizont_x -= 1.0))
-		horizont_y += horizont_ya;
-	horizont_ray_len = hypot(horizont_x - cub->pos.x, cub->pos.y - horizont_y);
-	return (vertic_ray_len < horizont_ray_len ? vertic_ray_len : horizont_ray_len);
+	if ((y_axis.x = cub->pos.x + (y_axis_y / tan(angle))) < 0.0)
+		y_axis.x = -4000.0;
+	y_axis.xa = 1.0 / tan(angle);
+	y_axis_y = cub->pos.y - y_axis_y;
+	while (y_axis.x > 0.0 &&
+			cub->map[(int)(y_axis_y - 0.1)][(int)y_axis.x] != '1'
+			&& (y_axis_y -= 1.0))
+		y_axis.x += y_axis.xa;
+	y_axis.ray_len = hypot(y_axis.x - cub->pos.x, cub->pos.y - y_axis_y);
+	if ((x_axis.y = cub->pos.y + (x_axis_x * tan(angle))) < 0.0)
+		x_axis.y = -4000.0;
+	x_axis.ya = tan(angle);
+	x_axis_x = cub->pos.x - x_axis_x;
+	while ((int)x_axis.y > 0.0 &&
+			cub->map[(int)x_axis.y][(int)(x_axis_x - 0.1)] != '1'
+			&& (x_axis_x -= 1.0))
+		x_axis.y += x_axis.ya;
+	x_axis.ray_len = hypot(x_axis_x - cub->pos.x, cub->pos.y - x_axis.y);
+	return (y_axis.ray_len < x_axis.ray_len ? y_axis.ray_len : x_axis.ray_len);
 }
 
-double			raythree(double vertic_y, double horizont_x, double angle, t_cubfile *cub)
+double			raythree(double y_axis_y,
+		double x_axis_x, double angle, t_cubfile *cub)
 {
-	double		vertic_x;
-	double		vertic_xa;
-	double		horizont_y;
-	double		horizont_ya;
-	double		vertic_ray_len;
-	double		horizont_ray_len;
+	t_y_axis	y_axis;
+	t_x_axis	x_axis;
 
-	if ((vertic_x = cub->pos.x - (vertic_y / tan(angle))) < 0.0)
-		vertic_x = -4000;;
-	vertic_xa = 1.0 / tan(angle);
-	vertic_y += cub->pos.y;
-	while ((int)vertic_x > 0.0 &&
-			cub->map[(int)(vertic_y)][(int)vertic_x] != '1'
-			&& (vertic_y += 1.0))
-		vertic_x -= vertic_xa;
-	vertic_ray_len = hypot(vertic_x - cub->pos.x, cub->pos.y - vertic_y);
-	if ((horizont_y = cub->pos.y + (horizont_x * tan(angle))) < 0.0)
-		horizont_y = 4000.0;
-	horizont_ya = tan(angle);
-	horizont_x = cub->pos.x - horizont_x;
-	while (horizont_y < (double)cub->d_map.h &&
-			cub->map[(int)horizont_y][(int)(horizont_x - 0.1)] != '1'
-			&& (horizont_x -= 1.0))
-		horizont_y += horizont_ya;
-	horizont_ray_len = hypot(horizont_x - cub->pos.x, cub->pos.y - horizont_y);
-	return (vertic_ray_len < horizont_ray_len ? vertic_ray_len : horizont_ray_len);
+	if ((y_axis.x = cub->pos.x - (y_axis_y / tan(angle))) < 0.0)
+		y_axis.x = -4000;
+	y_axis.xa = 1.0 / tan(angle);
+	y_axis_y += cub->pos.y;
+	while ((int)y_axis.x > 0.0 &&
+			cub->map[(int)(y_axis_y)][(int)y_axis.x] != '1'
+			&& (y_axis_y += 1.0))
+		y_axis.x -= y_axis.xa;
+	y_axis.ray_len = hypot(y_axis.x - cub->pos.x, cub->pos.y - y_axis_y);
+	if ((x_axis.y = cub->pos.y + (x_axis_x * tan(angle))) < 0.0)
+		x_axis.y = 4000.0;
+	x_axis.ya = tan(angle);
+	x_axis_x = cub->pos.x - x_axis_x;
+	while (x_axis.y < (double)cub->d_map.h &&
+			cub->map[(int)x_axis.y][(int)(x_axis_x - 0.1)] != '1'
+			&& (x_axis_x -= 1.0))
+		x_axis.y += x_axis.ya;
+	x_axis.ray_len = hypot(x_axis_x - cub->pos.x, cub->pos.y - x_axis.y);
+	return (y_axis.ray_len < x_axis.ray_len ? y_axis.ray_len : x_axis.ray_len);
 }
 
-double			rayfour(double vertic_y, double horizont_x, double angle, t_cubfile *cub)
+double			rayfour(double y_axis_y,
+		double x_axis_x, double angle, t_cubfile *cub)
 {
-	double		vertic_x;
-	double		vertic_xa;
-	double		horizont_y;
-	double		horizont_ya;
-	double		vertic_ray_len;
-	double		horizont_ray_len;
+	t_y_axis	y_axis;
+	t_x_axis	x_axis;
 
-	if ((vertic_x = cub->pos.x + ((vertic_y / tan(angle)) * -1.0)) > 40000.0)
-		vertic_x = 40000.0;
-	vertic_xa = (1.0 / tan(angle)) * -1.0;
-	vertic_y += cub->pos.y;
-	while (vertic_x < (double)cub->d_map.w &&
-			cub->map[(int)(vertic_y)][(int)vertic_x] != '1'
-			&& (vertic_y += 1.0))
-		vertic_x += vertic_xa;
-	vertic_ray_len = hypot(vertic_x - cub->pos.x, cub->pos.y - vertic_y);
-	if ((horizont_y = cub->pos.y + ((horizont_x * tan(angle)) * -1)) > 40000.0
-			|| horizont_y < 0.0)
-		horizont_y = 40000.0;
-	horizont_ya = tan(angle) * -1.0;
-	horizont_x += cub->pos.x;
-	while (horizont_y < (double)cub->d_map.h &&
-			cub->map[(int)horizont_y][(int)horizont_x] != '1'
-			&& (horizont_x += 1.0))
-		horizont_y += horizont_ya;
-	horizont_ray_len = hypot(horizont_x - cub->pos.x, cub->pos.y - horizont_y);
-	return (vertic_ray_len < horizont_ray_len ? vertic_ray_len : horizont_ray_len);
+	if ((y_axis.x = cub->pos.x + ((y_axis_y / tan(angle)) * -1.0)) > 40000.0)
+		y_axis.x = 40000.0;
+	y_axis.xa = (1.0 / tan(angle)) * -1.0;
+	y_axis_y += cub->pos.y;
+	while (y_axis.x < (double)cub->d_map.w &&
+			cub->map[(int)(y_axis_y)][(int)y_axis.x] != '1'
+			&& (y_axis_y += 1.0))
+		y_axis.x += y_axis.xa;
+	y_axis.ray_len = hypot(y_axis.x - cub->pos.x, cub->pos.y - y_axis_y);
+	if ((x_axis.y = cub->pos.y + ((x_axis_x * tan(angle)) * -1)) > 40000.0
+			|| x_axis.y < 0.0)
+		x_axis.y = 40000.0;
+	x_axis.ya = tan(angle) * -1.0;
+	x_axis_x += cub->pos.x;
+	while (x_axis.y < (double)cub->d_map.h &&
+			cub->map[(int)x_axis.y][(int)x_axis_x] != '1'
+			&& (x_axis_x += 1.0))
+		x_axis.y += x_axis.ya;
+	x_axis.ray_len = hypot(x_axis_x - cub->pos.x, cub->pos.y - x_axis.y);
+	return (y_axis.ray_len < x_axis.ray_len ? y_axis.ray_len : x_axis.ray_len);
 }

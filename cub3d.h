@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/21 16:46:16 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/21 17:22:46 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,25 @@ typedef struct		s_cam
 	double			angle_gap;
 }					t_cam;
 
+typedef struct		s_y_axis
+{
+	double		x;
+	double		xa;
+	double		ray_len;
+}					t_y_axis;
+
+typedef struct		s_x_axis
+{
+	double		y;
+	double		ya;
+	double		ray_len;
+}					t_x_axis;
+
+/*
+**	colors[0 to 1] -> Floor, Ceiling; [0 to 2] -> r, g, b;
+**	tx_path[0 to 5] -> NO, SO, WE, EA, S, NULL;
+*/
+
 typedef struct		s_cubfile
 {
 	t_color			colors[2];
@@ -125,16 +144,17 @@ typedef struct		s_cubfile
 }					t_cubfile;
 
 /*
-**	colors[0 to 1] -> Floor, Ceiling; [0 to 2] -> r, g, b;
-**	tx_path[0 to 5] -> NO, SO, WE, EA, S, NULL;
-**	d_map[0 to 1] -> W, H;
-**	map_pos[0 to 2] -> W, H, Orientation;
+**	Extracting .cub data
 */
 
 int				extract_cub_file(int ac, char **av, t_cubfile *cbfile);
 int				handle_map(t_cubfile *cbfile, t_gnl *gnl, char *file);
 int				verify_map(char **map);
 int				ft_error(const char *error);
+
+/*
+**	Raycast & rendering
+*/
 
 int				key_event(int key, t_cubfile *cub);
 int				cub_rendering(t_cubfile *cub);
@@ -144,13 +164,5 @@ double			rayone(double vertic_y, double horizont_x, double angle, t_cubfile *cub
 double			raytwo(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
 double			raythree(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
 double			rayfour(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
-/*t_dvec			x_rayone(double x, double angle, t_cubfile *cub);
-t_dvec			x_raytwo(double x, double angle, t_cubfile *cub);
-t_dvec			x_raythree(double x, double angle, t_cubfile *cub);
-t_dvec			x_rayfour(double x, double angle, t_cubfile *cub);
-t_dvec			y_rayone(double y, double angle, t_cubfile *cub);
-t_dvec			y_raytwo(double y, double angle, t_cubfile *cub);
-t_dvec			y_raythree(double y, double angle, t_cubfile *cub);
-t_dvec			y_rayfour(double y, double angle, t_cubfile *cub);
-*/
+
 #endif
