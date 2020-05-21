@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 15:57:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/19 14:59:31 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/20 16:55:17 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,104 +56,12 @@ void			*create_new_image(t_cubfile *cub)
 
 int				cub_rendering(t_cubfile *cub)
 {
-	int			col;
-	double		angle;
-	double		anglecam;
-	t_dvec		xvec;
-	t_dvec		yvec;
-	double		xlen;
-	double		ylen;
-	double		h_col;
-	double		h_col_hi;
-	double		h_col_low;
-	int			e;
-
-	h_col_hi = 0;
-	h_col_low = 0;
-	h_col = 0;
-	col = -1;
 	if (cub->newmove == 1)//On ne calcul et dessine que si une touche a ete appuyée (== != pos)
 	{
 		printf("\nZBOUB\n");
 		if (!create_new_image(cub))
 			return (0);
-		//image_drawing(cub);
-		angle = cub->pos.a + (PLAYER_FOV / 2);
-		anglecam = angle - angle + (PLAYER_FOV / 2);
-		printf("pos.x : %4.2f || pos.y %4.2f || anglestart %4.2f\n\n",
-				cub->pos.x, cub->pos.y, angle);
-		while (++col < cub->res.w)//A chaque colonne (pixel W) un lancer de rayon
-		{
-			if (angle < 0.0)
-				angle += 360.0;
-			else if (angle >= 360.0)
-				angle -= 360.0;
-			e = -1;
-			if (angle < 90.0)//selon l'angle du joueur les calculs sont differents
-			{
-				xvec = x_rayone((ceil(cub->pos.x) - cub->pos.x), angle * TO_RAD, cub);
-				yvec = y_rayone(cub->pos.y - floor(cub->pos.y), angle * TO_RAD, cub);
-			}
-			else if (angle < 180.0)
-			{
-				xvec = x_raytwo(cub->pos.x - floor(cub->pos.x), angle * TO_RAD, cub);
-				yvec = y_raytwo(cub->pos.y - floor(cub->pos.y), angle * TO_RAD, cub);
-			}
-			else if (angle < 270.0)
-			{
-				yvec = y_raythree(ceil(cub->pos.y) - cub->pos.y, angle * TO_RAD, cub);
-				xvec = x_raythree(cub->pos.x - floor(cub->pos.x), angle * TO_RAD, cub);
-			}
-			else if (angle < 360.0)
-			{
-				yvec = y_rayfour(ceil(cub->pos.y) - cub->pos.y, angle * TO_RAD, cub);
-				xvec = x_rayfour((ceil(cub->pos.x) - cub->pos.x), angle * TO_RAD, cub);
-			}
-			xlen = hypot(xvec.x - cub->pos.x, cub->pos.y - xvec.y);//On finit par avoir les len
-			ylen = hypot(yvec.x - cub->pos.x, cub->pos.y - yvec.y);//horizontale et verticales
-			if (xlen < ylen)//On choisit la plus courte
-			{
-				xlen *= cos(anglecam * TO_RAD);//Correction optique de la longueur
-				if ((h_col = ((double)cub->cam.d_cam / (1.0 * xlen))) > (double)cub->res.h)
-					h_col = (double)cub->res.h;//Caclcul de la taille de la colonne a dessiner
-				h_col_hi = ((double)cub->res.h - h_col) / 2.0;//calcul colonne haute (ceil)
-				h_col_low = ((double)cub->res.h + h_col) / 2.0;//calcul colonne basse (floor)
-				while (++e < h_col_hi)
-					ft_pixel_put(&(cub->img[0]), col, e, cub->colors[0].color);
-				while (e < h_col_low)
-				{
-					ft_pixel_put(&(cub->img[0]), col, e, 17635);
-					e++;
-				}
-				while (e < cub->res.h)
-				{
-					ft_pixel_put(&(cub->img[0]), col, e, 18276);
-					e++;
-				}
-			}
-			else
-			{
-				ylen *= cos(anglecam * TO_RAD);
-				if ((h_col = ((double)cub->cam.d_cam / (1.0 * ylen))) > (double)cub->res.h)
-					h_col = (double)cub->res.h;//Si h_col > res.h, les calculs hi&low sont faux(<0)
-				h_col_hi = ((double)cub->res.h - h_col) / 2.0;
-				h_col_low = ((double)cub->res.h + h_col) / 2.0;
-				while (++e < h_col_hi)
-					ft_pixel_put(&(cub->img[0]), col, e, cub->colors[0].color);
-				while (e < h_col_low)
-				{
-					ft_pixel_put(&(cub->img[0]), col, e, 14388893);
-					e++;
-				}
-				while (e < cub->res.h)
-				{
-					ft_pixel_put(&(cub->img[0]), col, e, 18276);
-					e++;
-				}
-			}
-			angle -= cub->cam.angle_gap;//On passe au rayon suivant, colonne suivante, pixl suivant
-			anglecam -= cub->cam.angle_gap;//angle suivant
-		}
+		image_drawing(cub);
 		render_image(cub);//put image to window
 		destroy_old_image(cub);
 		//test_print_pos(cub);

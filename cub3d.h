@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/19 14:28:37 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/21 16:46:16 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,10 @@
 # define MLXK_LEFT	123
 # define MLXK_RIGHT	124
 
-# define PLAYER_FOV	66.0
-# define PLAYER_ROTATE	3.0
+# define PLAYER_FOV	60.0
+# define PLAYER_ROTATE	5.0
 # define PLAYER_MOVE	0.2
 # define TO_RAD	0.0174532925199432954743716805978692718781530857086181640625
-//# define DCAM_DIVIDER	1.1547005383792512400731311572599224746227264404296875
 # define DCAM_DIVIDER	(2 * tan((PLAYER_FOV / 2) * TO_RAD))
 
 typedef struct		s_gnl
@@ -141,7 +140,11 @@ int				key_event(int key, t_cubfile *cub);
 int				cub_rendering(t_cubfile *cub);
 void			image_drawing(t_cubfile *cub);
 void			ft_pixel_put(t_img *img, int x, int y, unsigned int color);
-t_dvec			x_rayone(double x, double angle, t_cubfile *cub);
+double			rayone(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
+double			raytwo(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
+double			raythree(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
+double			rayfour(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
+/*t_dvec			x_rayone(double x, double angle, t_cubfile *cub);
 t_dvec			x_raytwo(double x, double angle, t_cubfile *cub);
 t_dvec			x_raythree(double x, double angle, t_cubfile *cub);
 t_dvec			x_rayfour(double x, double angle, t_cubfile *cub);
@@ -149,5 +152,5 @@ t_dvec			y_rayone(double y, double angle, t_cubfile *cub);
 t_dvec			y_raytwo(double y, double angle, t_cubfile *cub);
 t_dvec			y_raythree(double y, double angle, t_cubfile *cub);
 t_dvec			y_rayfour(double y, double angle, t_cubfile *cub);
-
+*/
 #endif
