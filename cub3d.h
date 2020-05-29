@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/29 12:03:22 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/29 14:46:31 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,15 @@
 # define PLAYER_MOVE	0.2
 # define TO_RAD	0.0174532925199432954743716805978692718781530857086181640625
 # define DCAM_DIVIDER	(2 * tan((PLAYER_FOV / 2) * TO_RAD))
+
+/*
+**	texture magic numbers
+*/
+
+# define TX_NO	0
+# define TX_SO	1
+# define TX_WE	2
+# define TX_EA	3
 
 /*
 **	parsing
@@ -170,6 +179,8 @@ typedef struct		s_cubfile
 	t_mlx			mlx;
 	t_img			img[2];
 	t_cam			cam;
+	int				side;
+	double			x_tex;
 }					t_cubfile;
 
 /*
