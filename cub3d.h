@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/28 23:55:53 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/29 12:03:22 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,15 +132,22 @@ typedef struct		s_y_axis
 {
 	double		x;
 	double		xa;
-	double		ray_len;
-}					t_y_axis;
+	double		len;
+}					t_y_ray;
 
 typedef struct		s_x_axis
 {
 	double		y;
 	double		ya;
-	double		ray_len;
-}					t_x_axis;
+	double		len;
+}					t_x_ray;
+
+typedef struct		s_col
+{
+	int			wall;
+	int			ceil;
+	int			floor;
+}					t_col;
 
 /*
 **	colors[0 to 1] -> Floor, Ceiling; [0 to 2] -> r, g, b;

@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 20:27:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/28 23:50:28 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/29 11:48:11 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,17 @@
 
 void			column_drawing(t_cubfile *cub, double ray, int col)
 {
-	int			h_col;
-	int			h_col_hi;
-	int			h_col_low;
+	t_col		c;
 	int			e;
 
-	if ((h_col = (int)(cub->cam.d_cam / (0.92 * ray))) > cub->res.h)
-		h_col = cub->res.h;//Caclcul de la taille de la colonne a dessiner
-	h_col_hi = (cub->res.h - h_col) / 2;//calcul colonne haute (ceil)
-	h_col_low = (cub->res.h + h_col) / 2;//calcul colonne basse (floor)
+	if ((c.wall = (int)(cub->cam.d_cam / (0.92 * ray))) > cub->res.h)
+		c.wall = cub->res.h;//Caclcul de la taille de la colonne a dessiner
+	c.ceil = (cub->res.h - c.wall) / 2;//calcul colonne haute (ceil)
+	c.floor = (cub->res.h + c.wall) / 2;//calcul colonne basse (floor)
 	e = 0;
-	while (e < h_col_hi)
+	while (e < c.ceil)
 		ft_pixel_put(&(cub->img[0]), col, e++, cub->colors[1].color);
-	while (e < h_col_low)
+	while (e < c.floor)
 		ft_pixel_put(&(cub->img[0]), col, e++, 17635);
 	while (e < cub->res.h)
 		ft_pixel_put(&(cub->img[0]), col, e++, cub->colors[0].color);
