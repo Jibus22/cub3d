@@ -6,11 +6,38 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 17:43:14 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/29 14:49:18 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/29 19:45:09 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+/*
+**	rayone, two, three or four each corresponds to a quadrant of the
+**	trigonometric circle. One of them is called according to the angle given
+**	in parameter.
+**	the main process is the same for all.
+**
+**	There is two rays which are casted : y_grid in a first time, then x_grid.
+**
+**	We receive the closest y_ray_y or x_ray_x grid in parameter. We first
+**	calculate the corresponding y_ray.x or x_ray.y for each of those rays.
+**	then we calculate the step xa or ya. their corresponding step in ordinates
+**	& abscisses doesn't need calculations cause it is the lenght of a cell = 1.
+**
+**	then we give back to y_ray_y or x_ray_x their coordinates starting from the
+**	player position.
+**	Finally, we increment those value y_ray(x & y) & after x_ray(x & y) with
+**	their own step values, until we hit a wall cell.
+**
+**	Before returning the shortest ray, we record the hited side (W,E,N,S) &
+**	the x_pos (tex_x) hited, which will be useful to calculate the ratio of
+**	the hited cell & by this way give us after the right column texture.
+**
+**	they only have little differences like the sign of tan()
+**	(depending of the angle), the wall side hited or the manner to check the
+**	hited cell.
+*/
 
 double			rayone(double y_ray_y,
 		double x_ray_x, double angle, t_cubfile *cub)
@@ -35,7 +62,8 @@ double			rayone(double y_ray_y,
 			cub->map[(int)x_ray.y][(int)x_ray_x] != '1' && (x_ray_x += 1.0))
 		x_ray.y -= x_ray.ya;
 	x_ray.len = hypot(x_ray_x - cub->pos.x, cub->pos.y - x_ray.y);
-	cub->x_tex = y_ray.len < x_ray.len ? y_ray.x : x_ray.y;
+	cub->tex_x = y_ray.len < x_ray.len ? y_ray.x -
+			(int)y_ray.x : x_ray.y - (int)x_ray.y;
 	cub->side = y_ray.len < x_ray.len ? TX_NO : TX_EA;
 	return (y_ray.len < x_ray.len ? y_ray.len : x_ray.len);
 }
@@ -64,7 +92,8 @@ double			raytwo(double y_ray_y,
 			&& (x_ray_x -= 1.0))
 		x_ray.y += x_ray.ya;
 	x_ray.len = hypot(x_ray_x - cub->pos.x, cub->pos.y - x_ray.y);
-	cub->x_tex = y_ray.len < x_ray.len ? y_ray.x : x_ray.y;
+	cub->tex_x = y_ray.len < x_ray.len ? y_ray.x - (int)y_ray.x :
+		ceil(x_ray.y) - x_ray.y;
 	cub->side = y_ray.len < x_ray.len ? TX_NO : TX_WE;
 	return (y_ray.len < x_ray.len ? y_ray.len : x_ray.len);
 }
@@ -93,7 +122,8 @@ double			raythree(double y_ray_y,
 			&& (x_ray_x -= 1.0))
 		x_ray.y += x_ray.ya;
 	x_ray.len = hypot(x_ray_x - cub->pos.x, cub->pos.y - x_ray.y);
-	cub->x_tex = y_ray.len < x_ray.len ? y_ray.x : x_ray.y;
+	cub->tex_x = y_ray.len < x_ray.len ? ceil(y_ray.x) - y_ray.x :
+		ceil(x_ray.y) - x_ray.y;
 	cub->side = y_ray.len < x_ray.len ? TX_SO : TX_WE;
 	return (y_ray.len < x_ray.len ? y_ray.len : x_ray.len);
 }
@@ -122,7 +152,8 @@ double			rayfour(double y_ray_y,
 			&& (x_ray_x += 1.0))
 		x_ray.y += x_ray.ya;
 	x_ray.len = hypot(x_ray_x - cub->pos.x, cub->pos.y - x_ray.y);
-	cub->x_tex = y_ray.len < x_ray.len ? y_ray.x : x_ray.y;
+	cub->tex_x = y_ray.len < x_ray.len ? ceil(y_ray.x) - y_ray.x :
+		x_ray.y - (int)x_ray.y;
 	cub->side = y_ray.len < x_ray.len ? TX_SO : TX_EA;
 	return (y_ray.len < x_ray.len ? y_ray.len : x_ray.len);
 }

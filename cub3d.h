@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/29 14:46:31 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/29 17:58:51 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,12 @@ typedef struct		s_position
 **	mlx data
 */
 
+typedef struct	s_mlx
+{
+	void	*mlx;
+	void	*win;
+}				t_mlx;
+
 typedef struct	s_img
 {
 	void	*img;
@@ -121,11 +127,16 @@ typedef struct	s_img
 	int		endian;
 }				t_img;
 
-typedef struct	s_mlx
+typedef struct	s_texture
 {
-	void	*mlx;
-	void	*win;
-}				t_mlx;
+	void	*img;
+	char	*adr;
+	int		w;
+	int		h;
+	int		depth;
+	int		size_line;
+	int		endian;
+}				t_tex;
 
 typedef struct		s_cam
 {
@@ -180,7 +191,8 @@ typedef struct		s_cubfile
 	t_img			img[2];
 	t_cam			cam;
 	int				side;
-	double			x_tex;
+	double			tex_x;
+	t_tex			tex[4];
 }					t_cubfile;
 
 /*

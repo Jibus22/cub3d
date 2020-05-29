@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/28 23:26:04 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/29 17:59:22 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,24 @@ void			*create_new_image(t_cubfile *cub)
 	return ((void*)1);
 }
 
+int				init_textures(t_cubfile *cub)
+{
+	int			i;
+	//Choper et stocker la data de chaque fichier .xpm
+	i = -1;
+	while (++i < 4)
+	{
+		if (!(cub->tex[i].img = mlx_xpm_file_to_image(cub->mlx.mlx,
+						cub->tx_path[i], &(cub->tex[i].w),
+						&(cub->tex[i].h))))	
+			return (ft_error("Couldn't load a texture xpm file"));
+		cub->tex[i].adr = mlx_get_data_addr(cub->tex[i].img,
+				&(cub->tex[i].depth), &(cub->tex[i].size_line),
+				&(cub->tex[i].endian));
+	}
+	return (1);
+}
+
 void			*cubd(t_cubfile *cub, char *av)
 {
 	if (!(cub->mlx.mlx = mlx_init()))
@@ -52,6 +70,8 @@ void			*cubd(t_cubfile *cub, char *av)
 	cub->img[1].img = NULL;
 	cub->cam.d_cam = fabs(cub->res.w / DCAM_DIVIDER);//distance player-ecran pour garder 60fov
 	cub->cam.angle_gap = PLAYER_FOV / (double)(cub->res.w);//angle entre chaque pixel /raycasts
+	if (!(init_textures(cub)))
+		return (NULL);
 	if (!(create_new_image(cub)))
 		return (NULL);
 	mlx_key_hook(cub->mlx.win, key_event, cub);//met newmove a 1 et modifie t_pos
