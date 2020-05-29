@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/21 17:22:46 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/28 23:55:53 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 # include "mlx.h"
 # include "libft.h"
 
+/*
+**	parsing magic numbers
+*/
+
 # define R	82
 # define NO	157
 # define SO	162
@@ -34,6 +38,10 @@
 # define H	1
 # define O	2
 
+/*
+**	macosx key controls
+*/
+
 # define MLXK_ESC	53
 # define MLXK_Z	13
 # define MLXK_Q	0
@@ -42,11 +50,19 @@
 # define MLXK_LEFT	123
 # define MLXK_RIGHT	124
 
+/*
+**	player & camera settings
+*/
+
 # define PLAYER_FOV	60.0
 # define PLAYER_ROTATE	5.0
 # define PLAYER_MOVE	0.2
 # define TO_RAD	0.0174532925199432954743716805978692718781530857086181640625
 # define DCAM_DIVIDER	(2 * tan((PLAYER_FOV / 2) * TO_RAD))
+
+/*
+**	parsing
+*/
 
 typedef struct		s_gnl
 {
@@ -66,17 +82,15 @@ typedef union
 	}				rgb;
 }					t_color;
 
+/*
+**	cartesian coordinates
+*/
+
 typedef struct		s_isqur
 {
 	int				w;
 	int				h;
 }					t_isqur;
-
-typedef struct		s_dvector
-{
-	double			x;
-	double			y;
-}					t_dvec;
 
 typedef struct		s_position
 {
@@ -84,6 +98,10 @@ typedef struct		s_position
 	double			y;
 	double			a;
 }					t_pos;
+
+/*
+**	mlx data
+*/
 
 typedef struct	s_img
 {
@@ -105,6 +123,10 @@ typedef struct		s_cam
 	double			d_cam;
 	double			angle_gap;
 }					t_cam;
+
+/*
+**	dda raycasting
+*/
 
 typedef struct		s_y_axis
 {

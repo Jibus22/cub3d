@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/19 12:46:59 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/28 23:26:04 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,31 @@ void			printcubdata(t_cubfile *cbfile)
 		printf("%s\n", *cbfile->map++);
 }
 
+void			*create_new_image(t_cubfile *cub)
+{
+	if (!(cub->img[0].img = mlx_new_image(cub->mlx.mlx, cub->res.w, cub->res.h)))
+		return (NULL);
+	if (!(cub->img[0].adr = mlx_get_data_addr(cub->img[0].img,
+					&(cub->img[0].depth), &(cub->img[0].size_line),
+					&(cub->img[0].endian))))
+		return (NULL);
+	return ((void*)1);
+}
+
 void			*cubd(t_cubfile *cub, char *av)
 {
-	int			c;
-	int			r;
-	int			e;
-
-	c = 0;
-	r = 250;
-	e = 250;
 	if (!(cub->mlx.mlx = mlx_init()))
 		return (NULL);
 	if (!(cub->mlx.win = mlx_new_window(cub->mlx.mlx, cub->res.w, cub->res.h, av)))
 		return (NULL);
 	cub->newmove = 1;//permet de lancer la premiere image sans pour autant appuyer sur une touche
-	cub->alternate = 0;//variable alterne entre 0 et 1 pour appeler et supprimer les buffer img
 	cub->img[1].img = NULL;
 	cub->cam.d_cam = fabs(cub->res.w / DCAM_DIVIDER);//distance player-ecran pour garder 60fov
 	cub->cam.angle_gap = PLAYER_FOV / (double)(cub->res.w);//angle entre chaque pixel /raycasts
+	if (!(create_new_image(cub)))
+		return (NULL);
 	mlx_key_hook(cub->mlx.win, key_event, cub);//met newmove a 1 et modifie t_pos
-	mlx_loop_hook(cub->mlx.mlx, cub_rendering, cub);//Si newmove==1,crea nvlle img et nvx calcul
+	mlx_loop_hook(cub->mlx.mlx, cub_rendering, cub);//Si newmove==1,crea nvx calcul
 	mlx_loop(cub->mlx.mlx);
 	return ((void*)1);
 }
