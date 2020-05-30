@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 18:58:07 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 20:30:43 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,14 @@ int				init_textures(t_cubfile *cub)
 	return (1);
 }
 
+int				key_release(int key, t_cubfile *cub)
+{
+	if (key == MLXK_Z || key == MLXK_Q || key == MLXK_S || key == MLXK_D ||
+			key == MLXK_LEFT || key == MLXK_RIGHT)
+		cub->newmove = 1;
+	return (1);
+}
+
 void			*cubd(t_cubfile *cub, char *av)
 {
 	if (!(cub->mlx.mlx = mlx_init()))
@@ -74,7 +82,9 @@ void			*cubd(t_cubfile *cub, char *av)
 		return (NULL);
 	if (!(create_new_image(cub)))
 		return (NULL);
-	mlx_key_hook(cub->mlx.win, key_event, cub);//met newmove a 1 et modifie t_pos
+	//mlx_key_hook(cub->mlx.win, key_event, cub);//met newmove a 1 et modifie t_pos
+	mlx_hook(cub->mlx.win, KEYPRESS, 1L << 0, key_event, cub);//met newmove a 1 et modifie t_pos
+	mlx_hook(cub->mlx.win, KEYRELEASE, 1L << 1, key_release, cub);//met newmove a 1 et modifie t_pos
 	mlx_loop_hook(cub->mlx.mlx, image_drawing, cub);//Si newmove==1,crea nvx calcul
 	mlx_loop(cub->mlx.mlx);
 	return ((void*)1);

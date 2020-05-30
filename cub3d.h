@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 18:58:24 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 20:32:16 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@
 # define O	2
 
 /*
+**	X11 masks
+*/
+
+# define KEYPRESS	2
+# define KEYRELEASE	3
+# define DESTROYNOTIFY	17
+
+/*
 **	macosx key controls
 */
 
@@ -55,7 +63,7 @@
 */
 
 # define PLAYER_FOV	60.0
-# define PLAYER_ROTATE	5.0
+# define PLAYER_ROTATE	2.0
 # define PLAYER_MOVE	0.2
 # define TO_RAD	0.0174532925199432954743716805978692718781530857086181640625
 # define DCAM_DIVIDER	(2 * tan((PLAYER_FOV / 2) * TO_RAD))
