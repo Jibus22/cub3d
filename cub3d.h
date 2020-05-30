@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/29 17:58:51 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 17:53:59 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ typedef struct	s_img
 	int		endian;
 }				t_img;
 
-typedef struct	s_texture
+typedef struct	s_tex_img
 {
 	void	*img;
 	char	*adr;
@@ -162,12 +162,23 @@ typedef struct		s_x_axis
 	double		len;
 }					t_x_ray;
 
+/*
+**	column drawing
+*/
+
 typedef struct		s_col
 {
 	int			wall;
 	int			ceil;
 	int			floor;
 }					t_col;
+
+typedef struct		s_texture_xpm
+{
+	t_color			color;
+	double			ratio_y;
+	int				y;
+}					t_texture;
 
 /*
 **	colors[0 to 1] -> Floor, Ceiling; [0 to 2] -> r, g, b;
