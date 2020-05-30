@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 17:53:59 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 18:58:24 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,8 +220,7 @@ int				ft_error(const char *error);
 */
 
 int				key_event(int key, t_cubfile *cub);
-int				cub_rendering(t_cubfile *cub);
-void			image_drawing(t_cubfile *cub);
+int				image_drawing(t_cubfile *cub);
 void			ft_pixel_put(t_img *img, int x, int y, unsigned int color);
 double			rayone(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
 double			raytwo(double vertic_y, double horizont_x, double angle, t_cubfile *cub);

@@ -6,16 +6,24 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 20:27:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 18:39:35 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 19:07:18 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+void			ft_pixel_put(t_img *img, int x, int y, unsigned int color)
+{
+	char		*dst;
+
+	dst = img->adr + ((y * img->size_line) + (x * img->depth / 8));
+	*(unsigned int*)dst = color;
+}
+
 /*
 **	column_drawing calculates with the help of the raylen casted & the cam.dcam
 **	the lenght of the wall.
-
+**
 **	cam.dcam is the distance between the camera and the
 **	screen, which is calculated at the beginning in order to keep the FOV
 **	coherent. camera, FOV & screen forms a triangle. If screen get bigger & we
@@ -48,8 +56,8 @@
 void			column_drawing(t_cubfile *cub, double ray, int col_x, int col_y)
 {
 	t_col		c;
-	int			wall_y;
 	t_texture	tex;
+	int			wall_y;
 
 	if ((c.wall = (int)(cub->cam.d_cam / (0.92 * ray))) > cub->res.h)
 		c.wall = cub->res.h;
@@ -88,30 +96,38 @@ double			raycast(t_cubfile *cub, double angle)
 }
 
 /*
+**	If a new move from the player is recorded, calculations get on :
 **	image_drawing cast rays, one by one, throught the FOV of the player, from
 **	the left to the right, & draw the given column of the x screen resolution
 **	with it.
+**	Finally, move or not, the drawn image is put in the window.
 */
 
-void			image_drawing(t_cubfile *cub)
+int				image_drawing(t_cubfile *cub)
 {
 	double		ray;
 	double		angle;
 	double		anglecam;
 	int			col_x;
 
-	angle = cub->pos.a + (PLAYER_FOV / 2);
-	anglecam = PLAYER_FOV / 2;
-	col_x = -1;
-	while (++col_x < cub->res.w)
+	if (cub->newmove == 1)
 	{
-		if (angle < 0.0)
-			angle += 360.0;
-		else if (angle >= 360.0)
-			angle -= 360.0;
-		ray = cos(anglecam * TO_RAD) * raycast(cub, angle);
-		column_drawing(cub, ray, col_x, 0);
-		angle -= cub->cam.angle_gap;
-		anglecam -= cub->cam.angle_gap;
+		angle = cub->pos.a + (PLAYER_FOV / 2);
+		anglecam = PLAYER_FOV / 2;
+		col_x = -1;
+		while (++col_x < cub->res.w)
+		{
+			if (angle < 0.0)
+				angle += 360.0;
+			else if (angle >= 360.0)
+				angle -= 360.0;
+			ray = cos(anglecam * TO_RAD) * raycast(cub, angle);
+			column_drawing(cub, ray, col_x, 0);
+			angle -= cub->cam.angle_gap;
+			anglecam -= cub->cam.angle_gap;
+		}
 	}
+	mlx_put_image_to_window(cub->mlx.mlx, cub->mlx.win, cub->img[0].img, 0, 0);
+	cub->newmove = 0;
+	return (1);
 }

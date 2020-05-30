@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/29 17:59:22 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 18:58:07 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void			*cubd(t_cubfile *cub, char *av)
 	if (!(create_new_image(cub)))
 		return (NULL);
 	mlx_key_hook(cub->mlx.win, key_event, cub);//met newmove a 1 et modifie t_pos
-	mlx_loop_hook(cub->mlx.mlx, cub_rendering, cub);//Si newmove==1,crea nvx calcul
+	mlx_loop_hook(cub->mlx.mlx, image_drawing, cub);//Si newmove==1,crea nvx calcul
 	mlx_loop(cub->mlx.mlx);
 	return ((void*)1);
 }
