@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 20:27:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 18:31:23 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 18:39:35 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 **
 **	The drawing starts from the ceil (res.h = 0, or y = 0) with his own color,
 **	stops to the y wall, then the y wall is drawn with the texture color until
-**	the y floor is reached & finally the floor is drawn with hos own color.
+**	the y floor is reached & finally the floor is drawn with his own color
+**	until the max screen res.h is reached.
 **
 **	To get the right texture pixel on the wall, we multiply the x_ratio of the
 **	x cell hited by the width resolution of the texture, then we multiply the
