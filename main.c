@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 20:30:43 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 22:52:28 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,12 @@ int				init_textures(t_cubfile *cub)
 	return (1);
 }
 
-int				key_release(int key, t_cubfile *cub)
+/*int				quit_cub(t_cubfile *cub)
 {
-	if (key == MLXK_Z || key == MLXK_Q || key == MLXK_S || key == MLXK_D ||
-			key == MLXK_LEFT || key == MLXK_RIGHT)
-		cub->newmove = 1;
-	return (1);
-}
+	if (cub->run == 0)
+		exit(0);
+	return (0);
+}*/
 
 void			*cubd(t_cubfile *cub, char *av)
 {
@@ -74,6 +73,7 @@ void			*cubd(t_cubfile *cub, char *av)
 		return (NULL);
 	if (!(cub->mlx.win = mlx_new_window(cub->mlx.mlx, cub->res.w, cub->res.h, av)))
 		return (NULL);
+	cub->run = 1;
 	cub->newmove = 1;//permet de lancer la premiere image sans pour autant appuyer sur une touche
 	cub->img[1].img = NULL;
 	cub->cam.d_cam = fabs(cub->res.w / DCAM_DIVIDER);//distance player-ecran pour garder 60fov
@@ -82,9 +82,8 @@ void			*cubd(t_cubfile *cub, char *av)
 		return (NULL);
 	if (!(create_new_image(cub)))
 		return (NULL);
-	//mlx_key_hook(cub->mlx.win, key_event, cub);//met newmove a 1 et modifie t_pos
 	mlx_hook(cub->mlx.win, KEYPRESS, 1L << 0, key_event, cub);//met newmove a 1 et modifie t_pos
-	mlx_hook(cub->mlx.win, KEYRELEASE, 1L << 1, key_release, cub);//met newmove a 1 et modifie t_pos
+	//mlx_hook(cub->mlx.win, 17L, 0, quit_cub, cub);
 	mlx_loop_hook(cub->mlx.mlx, image_drawing, cub);//Si newmove==1,crea nvx calcul
 	mlx_loop(cub->mlx.mlx);
 	return ((void*)1);

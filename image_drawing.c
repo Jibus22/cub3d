@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 20:27:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 19:07:18 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 23:09:30 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,19 @@ void			column_drawing(t_cubfile *cub, double ray, int col_x, int col_y)
 {
 	t_col		c;
 	t_texture	tex;
-	int			wall_y;
 
-	if ((c.wall = (int)(cub->cam.d_cam / (0.92 * ray))) > cub->res.h)
-		c.wall = cub->res.h;
+	c.wall = (int)(cub->cam.d_cam / (0.92 * ray));
+	tex.wall_y = c.wall < cub->res.h ? 0 : (c.wall - cub->res.h) / 2;
+	tex.ratio_y = (double)cub->tex[cub->side].h / (double)c.wall;
+	c.wall = c.wall < cub->res.h ? c.wall : cub->res.h;
 	c.ceil = (cub->res.h - c.wall) / 2;
 	c.floor = (cub->res.h + c.wall) / 2;
-	tex.ratio_y = (double)cub->tex[cub->side].h / (double)c.wall;
-	wall_y = 0;
 	cub->tex_x = (int)(cub->tex_x * cub->tex[cub->side].w);
 	while (col_y < c.ceil)
 		ft_pixel_put(&(cub->img[0]), col_x, col_y++, cub->colors[1].color);
 	while (col_y < c.floor)
 	{
-		tex.y = (int)(tex.ratio_y * wall_y++);
+		tex.y = (int)(tex.ratio_y * tex.wall_y++);
 		tex.color = ((t_color*)cub->tex[cub->side].adr)
 			[(int)(cub->tex_x) + (tex.y * cub->tex[cub->side].w)];
 		ft_pixel_put(&(cub->img[0]), col_x, col_y++, tex.color.color);

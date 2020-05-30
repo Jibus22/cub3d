@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/08 16:53:41 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 18:47:38 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 21:41:19 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ int				key_event(int key, t_cubfile *cub)
 		cub->newmove = 0;
 	else if (key == MLXK_RIGHT && (cub->newmove = 1) && !plyr_move(cub, 'r'))
 		cub->newmove = 0;
-	else if (key == MLXK_ESC && (cub->newmove = 1))
-		printf("esc key\n");
+	else if (key == MLXK_ESC)
+		cub->run = 0;
 	else
 		return (0);
 	return (1);

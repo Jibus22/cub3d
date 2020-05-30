@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 20:32:16 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 23:01:41 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@
 */
 
 # define KEYPRESS	2
-# define KEYRELEASE	3
 # define DESTROYNOTIFY	17
 
 /*
@@ -63,8 +62,8 @@
 */
 
 # define PLAYER_FOV	60.0
-# define PLAYER_ROTATE	2.0
-# define PLAYER_MOVE	0.2
+# define PLAYER_ROTATE	3.0
+# define PLAYER_MOVE	0.5
 # define TO_RAD	0.0174532925199432954743716805978692718781530857086181640625
 # define DCAM_DIVIDER	(2 * tan((PLAYER_FOV / 2) * TO_RAD))
 
@@ -186,6 +185,7 @@ typedef struct		s_texture_xpm
 	t_color			color;
 	double			ratio_y;
 	int				y;
+	int				wall_y;
 }					t_texture;
 
 /*
@@ -201,6 +201,7 @@ typedef struct		s_cubfile
 	int				nb_elements;
 	int				save;
 	int				newmove;
+	int				run;
 	int				alternate;
 	double			quarter;
 	t_isqur			d_map;
