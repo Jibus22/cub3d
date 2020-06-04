@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 23:01:41 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/06/04 13:14:44 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@
 */
 
 # define PLAYER_FOV	60.0
-# define PLAYER_ROTATE	3.0
+# define PLAYER_ROTATE	5.0
 # define PLAYER_MOVE	0.5
+# define PLAYER_LATERAL_MOVE	0.2
 # define TO_RAD	0.0174532925199432954743716805978692718781530857086181640625
 # define DCAM_DIVIDER	(2 * tan((PLAYER_FOV / 2) * TO_RAD))
 
@@ -231,9 +232,6 @@ int				ft_error(const char *error);
 int				key_event(int key, t_cubfile *cub);
 int				image_drawing(t_cubfile *cub);
 void			ft_pixel_put(t_img *img, int x, int y, unsigned int color);
-double			rayone(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
-double			raytwo(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
-double			raythree(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
-double			rayfour(double vertic_y, double horizont_x, double angle, t_cubfile *cub);
+double			raycast(t_cubfile *cub, double angle);
 
 #endif

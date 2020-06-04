@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 16:18:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/01 11:23:01 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/06/03 01:41:11 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int				is_wall(char **map, int w, int h, char currentl)
 			if (map[h + 1][w] == '0' || map[h + 1][w + 1] == '0')
 				return (ft_error("map error, wall missing"));
 	}
-	return (1);
+	return ((map[h][w] = '1'));
 }
 
 int				verify_map(char **map)

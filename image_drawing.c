@@ -6,19 +6,11 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 20:27:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 23:09:30 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/06/04 13:15:27 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void			ft_pixel_put(t_img *img, int x, int y, unsigned int color)
-{
-	char		*dst;
-
-	dst = img->adr + ((y * img->size_line) + (x * img->depth / 8));
-	*(unsigned int*)dst = color;
-}
 
 /*
 **	column_drawing calculates with the help of the raylen casted & the cam.dcam
@@ -78,29 +70,19 @@ void			column_drawing(t_cubfile *cub, double ray, int col_x, int col_y)
 		ft_pixel_put(&(cub->img[0]), col_x, col_y++, cub->colors[0].color);
 }
 
-double			raycast(t_cubfile *cub, double angle)
-{
-	if (angle < 90.0)
-		return (rayone(cub->pos.y - floor(cub->pos.y),
-				ceil(cub->pos.x) - cub->pos.x, angle * TO_RAD, cub));
-	else if (angle < 180.0)
-		return (raytwo(cub->pos.y - floor(cub->pos.y),
-				cub->pos.x - floor(cub->pos.x), angle * TO_RAD, cub));
-	else if (angle < 270.0)
-		return (raythree(ceil(cub->pos.y) - cub->pos.y,
-				cub->pos.x - floor(cub->pos.x), angle * TO_RAD, cub));
-	else
-		return (rayfour(ceil(cub->pos.y) - cub->pos.y,
-				ceil(cub->pos.x) - cub->pos.x, angle * TO_RAD, cub));
-}
-
 /*
-**	If a new move from the player is recorded, calculations get on :
+**	If a new move from the player is recorded, calculations goes on :
 **	image_drawing cast rays, one by one, throught the FOV of the player, from
 **	the left to the right, & draw the given column of the x screen resolution
 **	with it.
 **	Finally, move or not, the drawn image is put in the window.
 */
+
+/*
+void			sprite_drawing(t_cubfile *cub)
+{
+
+}*/
 
 int				image_drawing(t_cubfile *cub)
 {
@@ -125,6 +107,7 @@ int				image_drawing(t_cubfile *cub)
 			angle -= cub->cam.angle_gap;
 			anglecam -= cub->cam.angle_gap;
 		}
+		//sprite_drawing(cub);
 	}
 	mlx_put_image_to_window(cub->mlx.mlx, cub->mlx.win, cub->img[0].img, 0, 0);
 	cub->newmove = 0;

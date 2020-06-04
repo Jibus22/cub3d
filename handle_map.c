@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:11:10 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/12 19:57:30 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/06/03 01:23:20 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char			*ft_strnewspace(int size)
 
 /*
 ** map_measuring keep the lenght of the biggest line and count how
-** many lines ther is in the map. It also check if ther is no empty line
+** many lines there is in the map. It also check if there is no empty line
 ** between and if the height of the map is over 2.
 */
 
@@ -68,15 +68,15 @@ int				map_measuring(t_cubfile *cbfile, t_gnl *gnl)
 double			char_to_angle(char c)
 {
 	if (c == 'S')
-		return (270);
+		return (270.0);
 	else if (c == 'N')
-		return (90);
+		return (90.0);
 	else if (c == 'E')
-		return (0);
+		return (0.0);
 	else if (c == 'W')
-		return (180);
+		return (180.0);
 	else
-		return (-1);
+		return (-1.0);
 }
 
 int				map_cpy(t_cubfile *cbfile, char *line, int h)

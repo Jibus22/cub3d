@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/08 16:53:41 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 21:41:19 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/05/30 23:19:50 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ void			lateral_mv(t_pos *move, char way)
 {
 	if (way == 'q')
 	{
-		move->x += PLAYER_MOVE * cos((move->a + 90.0) * TO_RAD);
-		move->y -= PLAYER_MOVE * sin((move->a + 90.0) * TO_RAD);
+		move->x += PLAYER_LATERAL_MOVE * cos((move->a + 90.0) * TO_RAD);
+		move->y -= PLAYER_LATERAL_MOVE * sin((move->a + 90.0) * TO_RAD);
 	}
 	else
 	{
-		move->x -= PLAYER_MOVE * cos((move->a + 90.0) * TO_RAD);
-		move->y += PLAYER_MOVE * sin((move->a + 90.0) * TO_RAD);
+		move->x -= PLAYER_LATERAL_MOVE * cos((move->a + 90.0) * TO_RAD);
+		move->y += PLAYER_LATERAL_MOVE * sin((move->a + 90.0) * TO_RAD);
 	}
 }
 
