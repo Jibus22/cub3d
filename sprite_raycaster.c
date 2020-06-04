@@ -6,11 +6,16 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 16:38:38 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/06/04 17:52:56 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/06/04 18:09:15 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void			record_sprite()
+{
+	;
+}
 
 double			spriterayone(double y_ray_y,
 		double x_ray_x, double angle, t_cubfile *cub)
@@ -76,7 +81,7 @@ double			spriteraytwo(double y_ray_y,
 	while ((int)x_ray.y > 0.0 &&
 			cub->map[(int)x_ray.y][(int)(x_ray_x - 0.1)] != '1')
 	{
-		if (cub->map[(int)(x_ray.y)][(int)y_ray_x - 0.1] == '2')
+		if (cub->map[(int)(x_ray.y)][(int)(x_ray_x - 0.1)] == '2')
 			record_sprite();
 		x_ray_x -= 1.0;
 		x_ray.y += x_ray.ya;
@@ -114,7 +119,7 @@ double			spriteraythree(double y_ray_y,
 	while (x_ray.y < (double)cub->d_map.h &&
 			cub->map[(int)x_ray.y][(int)(x_ray_x - 0.1)] != '1')
 	{
-		if (cub->map[(int)(x_ray.y)][(int)x_ray_x - 0.1] == '2')
+		if (cub->map[(int)(x_ray.y)][(int)(x_ray_x - 0.1)] == '2')
 			record_sprite();
 		x_ray_x -= 1.0;
 		x_ray.y += x_ray.ya;
