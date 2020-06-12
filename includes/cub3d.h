@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/06/04 13:14:44 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/06/12 15:05:38 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ typedef union
 **	cartesian coordinates
 */
 
-typedef struct		s_isqur
+typedef struct		s_int_square
 {
 	int				w;
 	int				h;
@@ -159,16 +159,25 @@ typedef struct		s_cam
 typedef struct		s_y_axis
 {
 	double		x;
+	double		y;
 	double		xa;
 	double		len;
 }					t_y_ray;
 
 typedef struct		s_x_axis
 {
+	double		x;
 	double		y;
 	double		ya;
 	double		len;
 }					t_x_ray;
+
+typedef struct		s_ray
+{
+	t_x_ray			x;
+	t_y_ray			y;
+	double			longest_ray;
+}					t_ray;
 
 /*
 **	column drawing
@@ -190,6 +199,20 @@ typedef struct		s_texture_xpm
 }					t_texture;
 
 /*
+**	sprite
+*/
+
+	//t_isqur			cell;
+typedef struct		s_sprite
+{
+	double			dist;
+	int				height;
+	int				width;
+	int				col_start;
+	int				col_nb;
+}					t_sprite;
+
+/*
 **	colors[0 to 1] -> Floor, Ceiling; [0 to 2] -> r, g, b;
 **	tx_path[0 to 5] -> NO, SO, WE, EA, S, NULL;
 */
@@ -200,11 +223,10 @@ typedef struct		s_cubfile
 	t_isqur			res;
 	char			*tx_path[6];
 	int				nb_elements;
+	int				sprite_nb;
 	int				save;
 	int				newmove;
 	int				run;
-	int				alternate;
-	double			quarter;
 	t_isqur			d_map;
 	char			**map;
 	t_pos			pos;
@@ -214,6 +236,7 @@ typedef struct		s_cubfile
 	int				side;
 	double			tex_x;
 	t_tex			tex[4];
+	t_sprite		*sprite;
 }					t_cubfile;
 
 /*
@@ -233,5 +256,9 @@ int				key_event(int key, t_cubfile *cub);
 int				image_drawing(t_cubfile *cub);
 void			ft_pixel_put(t_img *img, int x, int y, unsigned int color);
 double			raycast(t_cubfile *cub, double angle);
+void			initray_y(t_ray *ray, t_cubfile *cub, double angle, double sign);
+void			initray_x(t_ray *ray, t_cubfile *cub, double angle, double sign);
+void			init_raylen_n_side(t_ray *ray,
+		t_cubfile *cub, int tex_one, int tex_two);
 
 #endif

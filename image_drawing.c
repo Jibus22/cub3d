@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 20:27:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/06/04 13:15:27 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/06/12 15:04:21 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,24 @@ void			column_drawing(t_cubfile *cub, double ray, int col_x, int col_y)
 }
 
 /*
+void			restore_sprite(t_cubfile *cub)
+{
+	int			i;
+
+	i = -1;
+	while (++i < sprite_nb)
+	{
+		cub->sprite[i].dist = -1.0;
+	}
+}*/
+
+/*
 **	If a new move from the player is recorded, calculations goes on :
 **	image_drawing cast rays, one by one, throught the FOV of the player, from
 **	the left to the right, & draw the given column of the x screen resolution
 **	with it.
 **	Finally, move or not, the drawn image is put in the window.
 */
-
-/*
-void			sprite_drawing(t_cubfile *cub)
-{
-
-}*/
 
 int				image_drawing(t_cubfile *cub)
 {
@@ -93,6 +99,7 @@ int				image_drawing(t_cubfile *cub)
 
 	if (cub->newmove == 1)
 	{
+		//restore_sprite(cub);
 		angle = cub->pos.a + (PLAYER_FOV / 2);
 		anglecam = PLAYER_FOV / 2;
 		col_x = -1;

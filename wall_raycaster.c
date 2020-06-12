@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dda_raycaster.c                                    :+:      :+:    :+:   */
+/*   wall_raycaster.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/19 17:43:14 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/06/04 13:10:23 by jle-corr         ###   ########.fr       */
+/*   Created: 2020/06/04 16:38:38 by jle-corr          #+#    #+#             */
+/*   Updated: 2020/06/12 15:04:02 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,137 +39,149 @@
 **	hited cell.
 */
 
-double			rayone(double y_ray_y,
-		double x_ray_x, double angle, t_cubfile *cub)
+/*
+double			cartesian_dist(double xa, double ya, double xb, double yb)
 {
-	t_y_ray	y_ray;
-	t_x_ray	x_ray;
+	return (sqrt(pow((xb - xa), 2) + pow((yb - ya), 2)));
+}*/
 
-	if ((y_ray.x = cub->pos.x + (y_ray_y / tan(angle))) > 40000.0)
-		y_ray.x = 4000.0;
-	y_ray.xa = 1.0 / tan(angle);
-	y_ray_y = cub->pos.y - y_ray_y;
-	while (y_ray.x < (double)cub->d_map.w &&
-			cub->map[(int)(y_ray_y - 0.1)][(int)y_ray.x] != '1'
-			&& (y_ray_y -= 1.0))
-		y_ray.x += y_ray.xa;
-	y_ray.len = hypot(y_ray.x - cub->pos.x, cub->pos.y - y_ray_y);
-	if ((x_ray.y = cub->pos.y - (x_ray_x * tan(angle))) < 0.0)
-		x_ray.y = -4000.0;
-	x_ray.ya = tan(angle);
-	x_ray_x += cub->pos.x;
-	while ((int)x_ray.y > 0 &&
-			cub->map[(int)x_ray.y][(int)x_ray_x] != '1' && (x_ray_x += 1.0))
-		x_ray.y -= x_ray.ya;
-	x_ray.len = hypot(x_ray_x - cub->pos.x, cub->pos.y - x_ray.y);
-	cub->tex_x = y_ray.len < x_ray.len ? y_ray.x -
-			(int)y_ray.x : x_ray.y - (int)x_ray.y;
-	cub->side = y_ray.len < x_ray.len ? TX_NO : TX_EA;
-	return (y_ray.len < x_ray.len ? y_ray.len : x_ray.len);
+// On a tout nos objets set a 0. J'ai un compteur d'objet set à 0.
+// Quand je touche un objet, je verifie si il a été initialisé. Si c'est son
+// 1er impact, je l'initialise (distance, L x l, col_start) et je met le compteur
+// D'objet à 1. -> J'ai 1 objet, à telle distance, qui a pour numéro 0.
+// Si cet objet est touché 40 fois, la seule valeur qui changera sera le compteur
+// d'impacts (et donc de colonne).
+// Si je touche 2 autres objets différents j'aurai mon compteur d'objets à 3 et mes
+// objets initialisés de 0 à 2.
+// Je pourrai ensuite les trier dans l'ordre décroissant selon leur distance, puis
+// les dessiner dans cet ordre.
+
+void			record_sprite(t_cubfile *cub)
+{
+	cub->newmove = cub->newmove;
 }
 
-double			raytwo(double y_ray_y,
-		double x_ray_x, double angle, t_cubfile *cub)
+double			rayone(t_ray *ray, double angle, t_cubfile *cub)
 {
-	t_y_ray	y_ray;
-	t_x_ray	x_ray;
-
-	if ((y_ray.x = cub->pos.x + (y_ray_y / tan(angle))) < 0.0)
-		y_ray.x = -4000.0;
-	y_ray.xa = 1.0 / tan(angle);
-	y_ray_y = cub->pos.y - y_ray_y;
-	while (y_ray.x > 0.0 &&
-			cub->map[(int)(y_ray_y - 0.1)][(int)y_ray.x] != '1'
-			&& (y_ray_y -= 1.0))
-		y_ray.x += y_ray.xa;
-	y_ray.len = hypot(y_ray.x - cub->pos.x, cub->pos.y - y_ray_y);
-	if ((x_ray.y = cub->pos.y + (x_ray_x * tan(angle))) < 0.0)
-		x_ray.y = -4000.0;
-	x_ray.ya = tan(angle);
-	x_ray_x = cub->pos.x - x_ray_x;
-	while ((int)x_ray.y > 0.0 &&
-			cub->map[(int)x_ray.y][(int)(x_ray_x - 0.1)] != '1'
-			&& (x_ray_x -= 1.0))
-		x_ray.y += x_ray.ya;
-	x_ray.len = hypot(x_ray_x - cub->pos.x, cub->pos.y - x_ray.y);
-	cub->tex_x = y_ray.len < x_ray.len ? y_ray.x - (int)y_ray.x :
-		ceil(x_ray.y) - x_ray.y;
-	cub->side = y_ray.len < x_ray.len ? TX_NO : TX_WE;
-	return (y_ray.len < x_ray.len ? y_ray.len : x_ray.len);
+	initray_y(ray, cub, angle, 1.0);
+	initray_x(ray, cub, angle, -1.0);
+	while ((int)ray->y.x < cub->d_map.w &&
+			cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] != '1')
+	{
+		if (cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] == '2')
+			record_sprite(cub);
+		ray->y.y -= 1.0;
+		ray->y.x += ray->y.xa;
+	}
+	while ((int)ray->x.y > 0 && (int)ray->x.y < cub->d_map.h &&
+			cub->map[(int)ray->x.y][(int)ray->x.x] != '1')
+	{
+		if (cub->map[(int)(ray->x.y)][(int)ray->x.x] == '2')
+			record_sprite(cub);
+		ray->x.x += 1.0;
+		ray->x.y += ray->x.ya;
+	}
+	init_raylen_n_side(ray, cub, TX_NO, TX_EA);
+	cub->tex_x = ray->y.len < ray->x.len ? ray->y.x -
+			(int)ray->y.x : ray->x.y - (int)ray->x.y;
+	return (ray->longest_ray);
 }
 
-double			raythree(double y_ray_y,
-		double x_ray_x, double angle, t_cubfile *cub)
+double			raytwo(t_ray *ray, double angle, t_cubfile *cub)
 {
-	t_y_ray	y_ray;
-	t_x_ray	x_ray;
-
-	if ((y_ray.x = cub->pos.x - (y_ray_y / tan(angle))) < 0.0)
-		y_ray.x = -4000;
-	y_ray.xa = 1.0 / tan(angle);
-	y_ray_y += cub->pos.y;
-	while ((int)y_ray.x > 0.0 &&
-			cub->map[(int)(y_ray_y)][(int)y_ray.x] != '1'
-			&& (y_ray_y += 1.0))
-		y_ray.x -= y_ray.xa;
-	y_ray.len = hypot(y_ray.x - cub->pos.x, cub->pos.y - y_ray_y);
-	if ((x_ray.y = cub->pos.y + (x_ray_x * tan(angle))) < 0.0)
-		x_ray.y = 4000.0;
-	x_ray.ya = tan(angle);
-	x_ray_x = cub->pos.x - x_ray_x;
-	while (x_ray.y < (double)cub->d_map.h &&
-			cub->map[(int)x_ray.y][(int)(x_ray_x - 0.1)] != '1'
-			&& (x_ray_x -= 1.0))
-		x_ray.y += x_ray.ya;
-	x_ray.len = hypot(x_ray_x - cub->pos.x, cub->pos.y - x_ray.y);
-	cub->tex_x = y_ray.len < x_ray.len ? ceil(y_ray.x) - y_ray.x :
-		ceil(x_ray.y) - x_ray.y;
-	cub->side = y_ray.len < x_ray.len ? TX_SO : TX_WE;
-	return (y_ray.len < x_ray.len ? y_ray.len : x_ray.len);
+	initray_y(ray, cub, angle, 1.0);
+	initray_x(ray, cub, angle, 1.0);
+	while ((int)ray->y.x > 0 && (int)ray->y.x < cub->d_map.w &&
+			cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] != '1')
+	{
+		if (cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] == '2')
+			record_sprite(cub);
+		ray->y.y -= 1.0;
+		ray->y.x += ray->y.xa;
+	}
+	while ((int)ray->x.y > 0 && (int)ray->x.y < cub->d_map.h &&
+			cub->map[(int)ray->x.y][(int)(ray->x.x - 0.1)] != '1')
+	{
+		if (cub->map[(int)(ray->x.y)][(int)(ray->x.x - 0.1)] == '2')
+			record_sprite(cub);
+		ray->x.x -= 1.0;
+		ray->x.y += ray->x.ya;
+	}
+	init_raylen_n_side(ray, cub, TX_NO, TX_WE);
+	cub->tex_x = ray->y.len < ray->x.len ? ray->y.x - (int)ray->y.x :
+		ceil(ray->x.y) - ray->x.y;
+	return (ray->longest_ray);
 }
 
-double			rayfour(double y_ray_y,
-		double x_ray_x, double angle, t_cubfile *cub)
+double			raythree(t_ray *ray, double angle, t_cubfile *cub)
 {
-	t_y_ray	y_ray;
-	t_x_ray	x_ray;
+	initray_y(ray, cub, angle, -1.0);
+	initray_x(ray, cub, angle, 1.0);
+	while ((int)ray->y.x > 0 && (int)ray->y.x < cub->d_map.w &&
+			cub->map[(int)(ray->y.y)][(int)ray->y.x] != '1')
+	{
+		if (cub->map[(int)(ray->y.y)][(int)ray->y.x] == '2')
+			record_sprite(cub);
+		ray->y.y += 1.0;
+		ray->y.x += ray->y.xa;
+	}
+	while ((int)ray->x.y < cub->d_map.h &&
+			cub->map[(int)ray->x.y][(int)(ray->x.x - 0.1)] != '1')
+	{
+		if (cub->map[(int)(ray->x.y)][(int)(ray->x.x - 0.1)] == '2')
+			record_sprite(cub);
+		ray->x.x -= 1.0;
+		ray->x.y += ray->x.ya;
+	}
+	init_raylen_n_side(ray, cub, TX_SO, TX_WE);
+	cub->tex_x = ray->y.len < ray->x.len ? ceil(ray->y.x) - ray->y.x :
+		ceil(ray->x.y) - ray->x.y;
+	return (ray->longest_ray);
+}
 
-	if ((y_ray.x = cub->pos.x + ((y_ray_y / tan(angle)) * -1.0)) > 40000.0)
-		y_ray.x = 40000.0;
-	y_ray.xa = (1.0 / tan(angle)) * -1.0;
-	y_ray_y += cub->pos.y;
-	while (y_ray.x < (double)cub->d_map.w &&
-			cub->map[(int)(y_ray_y)][(int)y_ray.x] != '1' && (y_ray_y += 1.0))
-		y_ray.x += y_ray.xa;
-	y_ray.len = hypot(y_ray.x - cub->pos.x, cub->pos.y - y_ray_y);
-	if ((x_ray.y = cub->pos.y + ((x_ray_x * tan(angle)) * -1)) > 40000.0
-			|| x_ray.y < 0.0)
-		x_ray.y = 40000.0;
-	x_ray.ya = tan(angle) * -1.0;
-	x_ray_x += cub->pos.x;
-	while (x_ray.y < (double)cub->d_map.h &&
-			cub->map[(int)x_ray.y][(int)x_ray_x] != '1'
-			&& (x_ray_x += 1.0))
-		x_ray.y += x_ray.ya;
-	x_ray.len = hypot(x_ray_x - cub->pos.x, cub->pos.y - x_ray.y);
-	cub->tex_x = y_ray.len < x_ray.len ? ceil(y_ray.x) - y_ray.x :
-		x_ray.y - (int)x_ray.y;
-	cub->side = y_ray.len < x_ray.len ? TX_SO : TX_EA;
-	return (y_ray.len < x_ray.len ? y_ray.len : x_ray.len);
+double			rayfour(t_ray *ray, double angle, t_cubfile *cub)
+{
+	initray_y(ray, cub, angle, -1.0);
+	initray_x(ray, cub, angle, -1.0);
+	while ((int)ray->y.x < cub->d_map.w &&
+			cub->map[(int)(ray->y.y)][(int)ray->y.x] != '1')
+	{
+		if (cub->map[(int)(ray->y.y)][(int)ray->y.x] == '2')
+			record_sprite(cub);
+		ray->y.y += 1.0;
+		ray->y.x += ray->y.xa;
+	}
+	while ((int)ray->x.y < cub->d_map.h &&
+			cub->map[(int)ray->x.y][(int)ray->x.x] != '1')
+	{
+		if (cub->map[(int)(ray->x.y)][(int)ray->x.x] == '2')
+			record_sprite(cub);
+		ray->x.x += 1.0;
+		ray->x.y += ray->x.ya;
+	}
+	init_raylen_n_side(ray, cub, TX_SO, TX_EA);
+	cub->tex_x = ray->y.len < ray->x.len ? ceil(ray->y.x) - ray->y.x :
+		ray->x.y - (int)ray->x.y;
+	return (ray->longest_ray);
 }
 
 double			raycast(t_cubfile *cub, double angle)
 {
-	if (angle < 90.0)
-		return (rayone(cub->pos.y - floor(cub->pos.y),
-				ceil(cub->pos.x) - cub->pos.x, angle * TO_RAD, cub));
-	else if (angle < 180.0)
-		return (raytwo(cub->pos.y - floor(cub->pos.y),
-				cub->pos.x - floor(cub->pos.x), angle * TO_RAD, cub));
-	else if (angle < 270.0)
-		return (raythree(ceil(cub->pos.y) - cub->pos.y,
-				cub->pos.x - floor(cub->pos.x), angle * TO_RAD, cub));
+	t_ray	ray;
+
+	if (angle < 90.0 && (ray.y.y = cub->pos.y - floor(cub->pos.y)) > -1.0 &&
+			(ray.x.x = ceil(cub->pos.x) - cub->pos.x) > -1.0)
+		return (rayone(&ray, angle * TO_RAD, cub));
+	else if (angle < 180.0 && (ray.y.y = cub->pos.y - floor(cub->pos.y)) > -1.0
+			&& (ray.x.x = cub->pos.x - floor(cub->pos.x)) > -1.0)
+		return (raytwo(&ray, angle * TO_RAD, cub));
+	else if (angle < 270.0 && (ray.y.y = ceil(cub->pos.y) - cub->pos.y) > -1.0
+			&& (ray.x.x = cub->pos.x - floor(cub->pos.x)) > -1.0)
+		return (raythree(&ray, angle * TO_RAD, cub));
 	else
-		return (rayfour(ceil(cub->pos.y) - cub->pos.y,
-				ceil(cub->pos.x) - cub->pos.x, angle * TO_RAD, cub));
+	{
+		ray.x.x = ceil(cub->pos.x) - cub->pos.x;
+		ray.y.y = ceil(cub->pos.y) - cub->pos.y;
+		return (rayfour(&ray, angle * TO_RAD, cub));
+	}
 }

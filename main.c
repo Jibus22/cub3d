@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 22:52:28 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/06/10 18:56:12 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,24 @@ int				init_textures(t_cubfile *cub)
 	return (0);
 }*/
 
+/*
+int				init_sprite(t_cubfile *cub)
+{
+	t_isqur		m_cell;
+	int			i;
+
+	if (!(cub->sprite = malloc(sizeof(t_sprite) * cub->sprite_nb)))
+		return (0);
+	m_cell.w = -1;
+	m_cell.h = -1;
+	i = -1;
+	while (++m_cell.h < cub->d_map.h && (m_cell.w = -1) > -2)
+		while (++m_cell.w < cub->d_map.w && ++i > -1)
+			if (cub->map[m_cell.h][m_cell.w] == '2')
+				cub->sprite[i].cell = m_cell;;
+	return (1);
+}*/
+
 void			*cubd(t_cubfile *cub, char *av)
 {
 	if (!(cub->mlx.mlx = mlx_init()))
@@ -80,6 +98,8 @@ void			*cubd(t_cubfile *cub, char *av)
 	cub->cam.angle_gap = PLAYER_FOV / (double)(cub->res.w);//angle entre chaque pixel /raycasts
 	if (!(init_textures(cub)))
 		return (NULL);
+	//if (!(init_sprite(cub)))
+	//	return (NULL);
 	if (!(create_new_image(cub)))
 		return (NULL);
 	mlx_hook(cub->mlx.win, KEYPRESS, 1L << 0, key_event, cub);//met newmove a 1 et modifie t_pos

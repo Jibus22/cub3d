@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:11:10 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/06/03 01:23:20 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/06/05 16:48:54 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ int				map_cpy(t_cubfile *cbfile, char *line, int h)
 	w = 0;
 	while (*line)
 	{
-		if (*line == '0' || *line == '1' || *line == ' ' || *line == '2')
+		if (*line == '0' || *line == '1' || *line == ' ' ||
+				(*line == '2' && cbfile->sprite_nb++ > -1))
 			cbfile->map[h][w] = *line;
 		else if ((*line == 'N' || *line == 'E' || *line == 'W'
 					|| *line == 'S') && cbfile->pos.x == -1)
@@ -141,6 +142,7 @@ int				handle_map(t_cubfile *cbfile, t_gnl *gnl, char *file)
 {
 	int			i;
 
+	cbfile->sprite_nb = 0;
 	if (!map_measuring(cbfile, gnl))
 		return (0);
 	if (close(gnl->fd) == -1)
