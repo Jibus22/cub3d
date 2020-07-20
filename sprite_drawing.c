@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 12:41:21 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/20 21:43:47 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/21 01:27:06 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,29 +35,29 @@ void			sortsprites(t_cubfile *cub)
 void			initialize_sprite_display(t_cubfile *cub,
 		t_spritedisplay *screen, t_sprite *sprite)
 {
-		screen->ratio_x = (double)cub->tex[TX_SPRITE].w / (double)sprite->width;
-		screen->ratio_y = (double)cub->tex[TX_SPRITE].h /
-			(double)sprite->height;
-		screen->y_start = cub->res.h > sprite->height ?
-			(cub->res.h - sprite->height) / 2 : 0;
-		screen->y_end = sprite->height > cub->res.h ? cub->res.h :
-			(cub->res.h + sprite->height) / 2;
-		screen->tex_wall_y = sprite->height < cub->res.h ? 0 :
-			(sprite->height - cub->res.h) / 2;
-		if (sprite->firsthit > sprite->left)
-		{
-			screen->x_start = sprite->firsthit;
-			screen->tex_wall_x = (sprite->firsthit - sprite->left);
-		}
-		else
-		{
-			screen->x_start = sprite->left;
-			screen->tex_wall_x = 0;
-		}
-		if (sprite->lasthit > sprite->right)
-			screen->x_end = sprite->right;
-		else
-			screen->x_end = sprite->lasthit;
+	screen->ratio_x = (double)cub->tex[TX_SPRITE].w / (double)sprite->width;
+	screen->ratio_y = (double)cub->tex[TX_SPRITE].h /
+		(double)sprite->height;
+	screen->y_start = cub->res.h > sprite->height ?
+		(cub->res.h - sprite->height) / 2 : 0;
+	screen->y_end = sprite->height > cub->res.h ? cub->res.h :
+		(cub->res.h + sprite->height) / 2;
+	screen->tex_wall_y = sprite->height < cub->res.h ? 0 :
+		(sprite->height - cub->res.h) / 2;
+	if (sprite->firsthit > sprite->left)
+	{
+		screen->x_start = sprite->firsthit;
+		screen->tex_wall_x = (sprite->firsthit - sprite->left);
+	}
+	else
+	{
+		screen->x_start = sprite->left;
+		screen->tex_wall_x = 0;
+	}
+	if (sprite->lasthit > sprite->right)
+		screen->x_end = sprite->right;
+	else
+		screen->x_end = sprite->lasthit;
 }
 
 /*
@@ -68,7 +68,7 @@ void			initialize_sprite_display(t_cubfile *cub,
 
 void			draw_line(t_cubfile *cub, t_spritedisplay sc, int tex_y)
 {
-	int	 		tex_x;
+	int			tex_x;
 	t_color		color;
 
 	while (sc.x_start <= sc.x_end)
@@ -84,8 +84,8 @@ void			draw_line(t_cubfile *cub, t_spritedisplay sc, int tex_y)
 
 void			sprite_drawing(t_cubfile *cub)
 {
-	int			i;
-	int			tex_y;
+	int				i;
+	int				tex_y;
 	t_spritedisplay	screen;
 
 	sortsprites(cub);

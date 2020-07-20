@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 20:27:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/20 17:51:35 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/21 01:25:51 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void			restore_sprite(t_cubfile *cub)
 		cub->sprite[i].justhited = -1;
 	}
 }
- 
+
 void			pprintspritedata(t_sprite *sp)
 {
 	printf("cellw:%-8d cellh:%-8d dist:%-8.2f\nH:%-8d\
