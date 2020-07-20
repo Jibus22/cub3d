@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/06/12 15:05:38 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/20 21:15:29 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@
 # define TX_SO	1
 # define TX_WE	2
 # define TX_EA	3
+# define TX_SPRITE	4
 
 /*
 **	parsing
@@ -176,12 +177,20 @@ typedef struct		s_ray
 {
 	t_x_ray			x;
 	t_y_ray			y;
-	double			longest_ray;
+	double			shortest_ray;
 }					t_ray;
 
 /*
 **	column drawing
 */
+
+typedef struct		s_screenray
+{
+	double			anglecam;
+	double			angle;
+	double			ray;
+	int				col_x;
+}					t_screenray;
 
 typedef struct		s_col
 {
@@ -202,15 +211,34 @@ typedef struct		s_texture_xpm
 **	sprite
 */
 
-	//t_isqur			cell;
 typedef struct		s_sprite
 {
+	t_isqur			cell;
 	double			dist;
+	double			vx;
+	double			vy;
 	int				height;
 	int				width;
-	int				col_start;
-	int				col_nb;
+	double			alpha;
+	int				mid;
+	int				left;
+	int				right;
+	int				firsthit;
+	int				justhited;
+	int				lasthit;
 }					t_sprite;
+
+typedef struct		s_spritedisplay
+{
+	double			ratio_x;
+	double			ratio_y;
+	int				y_start;
+	int				y_end;
+	int				tex_wall_y;
+	int				x_start;
+	int				x_end;
+	int				tex_wall_x;
+}					t_spritedisplay;
 
 /*
 **	colors[0 to 1] -> Floor, Ceiling; [0 to 2] -> r, g, b;
@@ -235,8 +263,10 @@ typedef struct		s_cubfile
 	t_cam			cam;
 	int				side;
 	double			tex_x;
-	t_tex			tex[4];
+	t_tex			tex[5];
+	int				col_x;
 	t_sprite		*sprite;
+	int				i_sprite;
 }					t_cubfile;
 
 /*
@@ -255,10 +285,17 @@ int				ft_error(const char *error);
 int				key_event(int key, t_cubfile *cub);
 int				image_drawing(t_cubfile *cub);
 void			ft_pixel_put(t_img *img, int x, int y, unsigned int color);
-double			raycast(t_cubfile *cub, double angle);
+double			raycast(t_cubfile *cub, double angle, int col_x);
 void			initray_y(t_ray *ray, t_cubfile *cub, double angle, double sign);
 void			initray_x(t_ray *ray, t_cubfile *cub, double angle, double sign);
 void			init_raylen_n_side(t_ray *ray,
 		t_cubfile *cub, int tex_one, int tex_two);
+
+/*
+**	Sprites
+*/
+
+int				record_sprite(t_cubfile *cub, int ycell, int xcell);
+void			sprite_drawing(t_cubfile *cub);
 
 #endif

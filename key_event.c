@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/08 16:53:41 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/30 23:19:50 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/14 14:41:41 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,9 @@ int				plyr_move(t_cubfile *cub, char c)
 		lateral_mv(&move, 'q');
 	else if (c == 'd')
 		lateral_mv(&move, 'd');
-	if ((c = cub->map[(int)(move.y)][(int)(move.x)])
-			== '1' || c == '2')
+	if (((int)(move.y) < 0 || (int)(move.y) > cub->d_map.h ||
+				(int)(move.x) < 0) || (int)(move.x) > cub->d_map.w ||
+			((c = cub->map[(int)(move.y)][(int)(move.x)]) == '1' || c == '2'))
 		return (0);
 	cub->pos = move;
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:11:10 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/06/05 16:48:54 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/14 15:56:41 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ int				map_cpy(t_cubfile *cbfile, char *line, int h)
 					|| *line == 'S') && cbfile->pos.x == -1)
 		{
 			cbfile->map[h][w] = *line;
-			cbfile->pos.x = w + 0.5;
-			cbfile->pos.y = h + 0.5;
+			cbfile->pos.x = w + 0.532;
+			cbfile->pos.y = h + 0.532;
 			cbfile->pos.a = char_to_angle(*line);
 		}
 		else

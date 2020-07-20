@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 16:38:38 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/06/12 15:04:02 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/17 21:09:55 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,6 @@
 **	hited cell.
 */
 
-/*
-double			cartesian_dist(double xa, double ya, double xb, double yb)
-{
-	return (sqrt(pow((xb - xa), 2) + pow((yb - ya), 2)));
-}*/
-
-// On a tout nos objets set a 0. J'ai un compteur d'objet set à 0.
-// Quand je touche un objet, je verifie si il a été initialisé. Si c'est son
-// 1er impact, je l'initialise (distance, L x l, col_start) et je met le compteur
-// D'objet à 1. -> J'ai 1 objet, à telle distance, qui a pour numéro 0.
-// Si cet objet est touché 40 fois, la seule valeur qui changera sera le compteur
-// d'impacts (et donc de colonne).
-// Si je touche 2 autres objets différents j'aurai mon compteur d'objets à 3 et mes
-// objets initialisés de 0 à 2.
-// Je pourrai ensuite les trier dans l'ordre décroissant selon leur distance, puis
-// les dessiner dans cet ordre.
-
-void			record_sprite(t_cubfile *cub)
-{
-	cub->newmove = cub->newmove;
-}
-
 double			rayone(t_ray *ray, double angle, t_cubfile *cub)
 {
 	initray_y(ray, cub, angle, 1.0);
@@ -69,7 +47,7 @@ double			rayone(t_ray *ray, double angle, t_cubfile *cub)
 			cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] != '1')
 	{
 		if (cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] == '2')
-			record_sprite(cub);
+			record_sprite(cub, (int)(ray->y.y - 0.1), (int)ray->y.x);
 		ray->y.y -= 1.0;
 		ray->y.x += ray->y.xa;
 	}
@@ -77,14 +55,14 @@ double			rayone(t_ray *ray, double angle, t_cubfile *cub)
 			cub->map[(int)ray->x.y][(int)ray->x.x] != '1')
 	{
 		if (cub->map[(int)(ray->x.y)][(int)ray->x.x] == '2')
-			record_sprite(cub);
+			record_sprite(cub, (int)(ray->x.y), (int)ray->x.x);
 		ray->x.x += 1.0;
 		ray->x.y += ray->x.ya;
 	}
 	init_raylen_n_side(ray, cub, TX_NO, TX_EA);
 	cub->tex_x = ray->y.len < ray->x.len ? ray->y.x -
 			(int)ray->y.x : ray->x.y - (int)ray->x.y;
-	return (ray->longest_ray);
+	return (ray->shortest_ray);
 }
 
 double			raytwo(t_ray *ray, double angle, t_cubfile *cub)
@@ -95,7 +73,7 @@ double			raytwo(t_ray *ray, double angle, t_cubfile *cub)
 			cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] != '1')
 	{
 		if (cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] == '2')
-			record_sprite(cub);
+			record_sprite(cub, (int)(ray->y.y - 0.1), (int)ray->y.x);
 		ray->y.y -= 1.0;
 		ray->y.x += ray->y.xa;
 	}
@@ -103,14 +81,14 @@ double			raytwo(t_ray *ray, double angle, t_cubfile *cub)
 			cub->map[(int)ray->x.y][(int)(ray->x.x - 0.1)] != '1')
 	{
 		if (cub->map[(int)(ray->x.y)][(int)(ray->x.x - 0.1)] == '2')
-			record_sprite(cub);
+			record_sprite(cub, (int)(ray->x.y), (int)(ray->x.x - 0.1));
 		ray->x.x -= 1.0;
 		ray->x.y += ray->x.ya;
 	}
 	init_raylen_n_side(ray, cub, TX_NO, TX_WE);
 	cub->tex_x = ray->y.len < ray->x.len ? ray->y.x - (int)ray->y.x :
 		ceil(ray->x.y) - ray->x.y;
-	return (ray->longest_ray);
+	return (ray->shortest_ray);
 }
 
 double			raythree(t_ray *ray, double angle, t_cubfile *cub)
@@ -121,7 +99,7 @@ double			raythree(t_ray *ray, double angle, t_cubfile *cub)
 			cub->map[(int)(ray->y.y)][(int)ray->y.x] != '1')
 	{
 		if (cub->map[(int)(ray->y.y)][(int)ray->y.x] == '2')
-			record_sprite(cub);
+			record_sprite(cub, (int)(ray->y.y), (int)ray->y.x);
 		ray->y.y += 1.0;
 		ray->y.x += ray->y.xa;
 	}
@@ -129,14 +107,14 @@ double			raythree(t_ray *ray, double angle, t_cubfile *cub)
 			cub->map[(int)ray->x.y][(int)(ray->x.x - 0.1)] != '1')
 	{
 		if (cub->map[(int)(ray->x.y)][(int)(ray->x.x - 0.1)] == '2')
-			record_sprite(cub);
+			record_sprite(cub, (int)(ray->x.y), (int)(ray->x.x - 0.1));
 		ray->x.x -= 1.0;
 		ray->x.y += ray->x.ya;
 	}
 	init_raylen_n_side(ray, cub, TX_SO, TX_WE);
 	cub->tex_x = ray->y.len < ray->x.len ? ceil(ray->y.x) - ray->y.x :
 		ceil(ray->x.y) - ray->x.y;
-	return (ray->longest_ray);
+	return (ray->shortest_ray);
 }
 
 double			rayfour(t_ray *ray, double angle, t_cubfile *cub)
@@ -147,7 +125,7 @@ double			rayfour(t_ray *ray, double angle, t_cubfile *cub)
 			cub->map[(int)(ray->y.y)][(int)ray->y.x] != '1')
 	{
 		if (cub->map[(int)(ray->y.y)][(int)ray->y.x] == '2')
-			record_sprite(cub);
+			record_sprite(cub, (int)(ray->y.y), (int)ray->y.x);
 		ray->y.y += 1.0;
 		ray->y.x += ray->y.xa;
 	}
@@ -155,20 +133,22 @@ double			rayfour(t_ray *ray, double angle, t_cubfile *cub)
 			cub->map[(int)ray->x.y][(int)ray->x.x] != '1')
 	{
 		if (cub->map[(int)(ray->x.y)][(int)ray->x.x] == '2')
-			record_sprite(cub);
+			record_sprite(cub, (int)(ray->x.y), (int)ray->x.x);
 		ray->x.x += 1.0;
 		ray->x.y += ray->x.ya;
 	}
 	init_raylen_n_side(ray, cub, TX_SO, TX_EA);
 	cub->tex_x = ray->y.len < ray->x.len ? ceil(ray->y.x) - ray->y.x :
 		ray->x.y - (int)ray->x.y;
-	return (ray->longest_ray);
+	return (ray->shortest_ray);
 }
 
-double			raycast(t_cubfile *cub, double angle)
+double			raycast(t_cubfile *cub, double angle, int col_x)
 {
 	t_ray	ray;
 
+	cub->col_x = col_x;
+	cub->i_sprite = -1;
 	if (angle < 90.0 && (ray.y.y = cub->pos.y - floor(cub->pos.y)) > -1.0 &&
 			(ray.x.x = ceil(cub->pos.x) - cub->pos.x) > -1.0)
 		return (rayone(&ray, angle * TO_RAD, cub));
