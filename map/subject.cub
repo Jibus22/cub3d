@@ -5,7 +5,7 @@ SO ./textures/blue_stone.xpm
 WE ./textures/gold_block.xpm
 EA ./textures/red_wool.xpm
 
-S ./textures/me.xpm
+S ./textures/barrel.xpm
 
 F 60,165,115
 C 225,155,255

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wall_raycaster.c                                   :+:      :+:    :+:   */
+/*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 16:38:38 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/17 21:09:55 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/23 01:22:03 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ double			rayone(t_ray *ray, double angle, t_cubfile *cub)
 {
 	initray_y(ray, cub, angle, 1.0);
 	initray_x(ray, cub, angle, -1.0);
-	while ((int)ray->y.x < cub->d_map.w &&
+	while (ray->y.x < cub->d_map.w && ray->y.y > 0 &&
 			cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] != '1')
 	{
 		if (cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] == '2')
@@ -51,8 +51,8 @@ double			rayone(t_ray *ray, double angle, t_cubfile *cub)
 		ray->y.y -= 1.0;
 		ray->y.x += ray->y.xa;
 	}
-	while ((int)ray->x.y > 0 && (int)ray->x.y < cub->d_map.h &&
-			cub->map[(int)ray->x.y][(int)ray->x.x] != '1')
+	while ((int)ray->x.y >= 0 && ray->x.y < cub->d_map.h && ray->x.x
+			< cub->d_map.w && cub->map[(int)ray->x.y][(int)ray->x.x] != '1')
 	{
 		if (cub->map[(int)(ray->x.y)][(int)ray->x.x] == '2')
 			record_sprite(cub, (int)(ray->x.y), (int)ray->x.x);
@@ -69,15 +69,15 @@ double			raytwo(t_ray *ray, double angle, t_cubfile *cub)
 {
 	initray_y(ray, cub, angle, 1.0);
 	initray_x(ray, cub, angle, 1.0);
-	while ((int)ray->y.x > 0 && (int)ray->y.x < cub->d_map.w &&
-			cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] != '1')
+	while (ray->y.y > 0 && (int)ray->y.x >= 0 && ray->y.x < cub->d_map.w
+			&& cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] != '1')
 	{
 		if (cub->map[(int)(ray->y.y - 0.1)][(int)ray->y.x] == '2')
 			record_sprite(cub, (int)(ray->y.y - 0.1), (int)ray->y.x);
 		ray->y.y -= 1.0;
 		ray->y.x += ray->y.xa;
 	}
-	while ((int)ray->x.y > 0 && (int)ray->x.y < cub->d_map.h &&
+	while (ray->x.y > 0 && ray->x.y < cub->d_map.w && ray->x.x > 0 &&
 			cub->map[(int)ray->x.y][(int)(ray->x.x - 0.1)] != '1')
 	{
 		if (cub->map[(int)(ray->x.y)][(int)(ray->x.x - 0.1)] == '2')
@@ -95,7 +95,7 @@ double			raythree(t_ray *ray, double angle, t_cubfile *cub)
 {
 	initray_y(ray, cub, angle, -1.0);
 	initray_x(ray, cub, angle, 1.0);
-	while ((int)ray->y.x > 0 && (int)ray->y.x < cub->d_map.w &&
+	while ((int)ray->y.x >= 0 && ray->y.y < cub->d_map.h &&
 			cub->map[(int)(ray->y.y)][(int)ray->y.x] != '1')
 	{
 		if (cub->map[(int)(ray->y.y)][(int)ray->y.x] == '2')
@@ -103,8 +103,8 @@ double			raythree(t_ray *ray, double angle, t_cubfile *cub)
 		ray->y.y += 1.0;
 		ray->y.x += ray->y.xa;
 	}
-	while ((int)ray->x.y < cub->d_map.h &&
-			cub->map[(int)ray->x.y][(int)(ray->x.x - 0.1)] != '1')
+	while (ray->x.y < cub->d_map.h && ray->x.x > 0
+			&& cub->map[(int)ray->x.y][(int)(ray->x.x - 0.1)] != '1')
 	{
 		if (cub->map[(int)(ray->x.y)][(int)(ray->x.x - 0.1)] == '2')
 			record_sprite(cub, (int)(ray->x.y), (int)(ray->x.x - 0.1));
@@ -121,16 +121,16 @@ double			rayfour(t_ray *ray, double angle, t_cubfile *cub)
 {
 	initray_y(ray, cub, angle, -1.0);
 	initray_x(ray, cub, angle, -1.0);
-	while ((int)ray->y.x < cub->d_map.w &&
-			cub->map[(int)(ray->y.y)][(int)ray->y.x] != '1')
+	while (ray->y.x < cub->d_map.w && ray->y.y < cub->d_map.h
+			&& cub->map[(int)(ray->y.y)][(int)ray->y.x] != '1')
 	{
 		if (cub->map[(int)(ray->y.y)][(int)ray->y.x] == '2')
 			record_sprite(cub, (int)(ray->y.y), (int)ray->y.x);
 		ray->y.y += 1.0;
 		ray->y.x += ray->y.xa;
 	}
-	while ((int)ray->x.y < cub->d_map.h &&
-			cub->map[(int)ray->x.y][(int)ray->x.x] != '1')
+	while (ray->x.y < cub->d_map.h && ray->x.x < cub->d_map.w &&
+			(int)ray->x.y > 0 && cub->map[(int)ray->x.y][(int)ray->x.x] != '1')
 	{
 		if (cub->map[(int)(ray->x.y)][(int)ray->x.x] == '2')
 			record_sprite(cub, (int)(ray->x.y), (int)ray->x.x);

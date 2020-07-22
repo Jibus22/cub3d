@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/20 21:15:29 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/23 01:11:33 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,8 +223,8 @@ typedef struct		s_sprite
 	int				mid;
 	int				left;
 	int				right;
-	int				firsthit;
 	int				justhited;
+	int				firsthit;
 	int				lasthit;
 }					t_sprite;
 

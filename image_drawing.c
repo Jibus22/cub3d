@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 20:27:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/21 01:25:51 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/21 18:19:37 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int				image_drawing(t_cubfile *cub)
 			ray.angle -= cub->cam.angle_gap;
 			ray.anglecam -= cub->cam.angle_gap;
 		}
-		printtsprite(cub);
+		//printtsprite(cub);
 		sprite_drawing(cub);
 	}
 	mlx_put_image_to_window(cub->mlx.mlx, cub->mlx.win, cub->img[0].img, 0, 0);

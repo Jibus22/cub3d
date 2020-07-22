@@ -6,13 +6,26 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/11 23:56:28 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/18 23:51:24 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/23 01:22:24 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void			initray_y(t_ray *ray, t_cubfile *cub, double angle, double sign)
+/*
+**	Tan :
+**
+**	0 = 0.0
+**	between : positive
+**	90 = +inf (reality with double : high value)
+**	between : negative
+**	180 = -0.0
+**	between : positive
+**	270 = -inf (reality with double : high value)
+**	between : negative
+*/
+
+/*void			initray_y(t_ray *ray, t_cubfile *cub, double angle, double sign)
 {
 	if ((ray->y.x = cub->pos.x + ((ray->y.y / tan(angle)) * sign)) > 40000.0
 			|| ray->y.x < 0.0)
@@ -26,6 +39,20 @@ void			initray_x(t_ray *ray, t_cubfile *cub, double angle, double sign)
 	if ((ray->x.y = cub->pos.y + ((ray->x.x * tan(angle)) * sign)) < 0.0
 			|| ray->x.y > 40000.0)
 		ray->x.y = 40000.0;
+	ray->x.ya = tan(angle) * sign;
+	ray->x.x = cub->pos.x - (ray->x.x * sign);
+}*/
+
+void			initray_y(t_ray *ray, t_cubfile *cub, double angle, double sign)
+{
+	ray->y.x = cub->pos.x + ((ray->y.y / tan(angle)) * sign);
+	ray->y.xa = (1.0 / tan(angle)) * sign;
+	ray->y.y = cub->pos.y - (ray->y.y * sign);
+}
+
+void			initray_x(t_ray *ray, t_cubfile *cub, double angle, double sign)
+{
+	ray->x.y = cub->pos.y + ((ray->x.x * tan(angle)) * sign);
 	ray->x.ya = tan(angle) * sign;
 	ray->x.x = cub->pos.x - (ray->x.x * sign);
 }

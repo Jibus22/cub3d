@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/15 20:18:07 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/21 18:04:59 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void			printcubdata(t_cubfile *cbfile)
 {
+	int			i;
+
 	printf("NO :%s\n", cbfile->tx_path[0]);
 	printf("SO :%s\n", cbfile->tx_path[1]);
 	printf("WE :%s\n", cbfile->tx_path[2]);
@@ -27,8 +29,9 @@ void			printcubdata(t_cubfile *cbfile)
 	printf("\ndimension map w - h : %d - %d\n", cbfile->d_map.w, cbfile->d_map.h);
 	printf("coordonnées joueur map w - h - o : %f - %f - %f\n\n",\
 			cbfile->pos.x, cbfile->pos.y, cbfile->pos.a);
-	while (*cbfile->map)
-		printf("%s\n", *cbfile->map++);
+	i = -1;
+	while (++i < cbfile->d_map.h)
+		printf("%s\n", cbfile->map[i]);
 }
 
 void			*create_new_image(t_cubfile *cub)
@@ -105,7 +108,7 @@ int				main(int ac, char **av)
 
 	if (!(extract_cub_file(ac, av, &cbfile)))
 		return (-1);
-	//printcubdata(&cbfile);
+	printcubdata(&cbfile);
 	if (!cubd(&cbfile, av[1]))
 		return (0);
 	//system("leaks a.out");

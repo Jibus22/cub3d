@@ -1,23 +1,23 @@
 R 600 600
 
-NO ./textures/barrel.xpm
+NO ./textures/stone.xpm
 SO ./textures/blue_stone.xpm
 WE ./textures/gold_block.xpm
 EA ./textures/red_wool.xpm
 
-S ./textures/sprite.xpm
+S ./textures/barrel.xpm
 
 F 60,165,115
 C 225,255,255
 
 
 
-111111111
+221121121
+200000002
 100000001
 100000001
-100000001
-1000E0001
-100000001
+2000W0002
 100000001
 100000001
-111111111
+200000002
+121121121
