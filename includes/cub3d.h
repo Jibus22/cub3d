@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/23 01:11:33 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/23 14:16:22 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@
 # define PLAYER_MOVE	0.5
 # define PLAYER_LATERAL_MOVE	0.2
 # define TO_RAD	0.0174532925199432954743716805978692718781530857086181640625
-# define DCAM_DIVIDER	(2 * tan((PLAYER_FOV / 2) * TO_RAD))
 
 /*
 **	texture magic numbers
@@ -297,5 +296,6 @@ void			init_raylen_n_side(t_ray *ray,
 
 int				record_sprite(t_cubfile *cub, int ycell, int xcell);
 void			sprite_drawing(t_cubfile *cub);
+int				quit_cub(t_cubfile *cub);
 
 #endif

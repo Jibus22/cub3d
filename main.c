@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/21 18:04:59 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/23 15:16:18 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ void			printcubdata(t_cubfile *cbfile)
 	printf("EA :%s\n", cbfile->tx_path[3]);
 	printf("S :%s\n", cbfile->tx_path[4]);
 	printf("res W & H :%d %d\n", cbfile->res.w, cbfile->res.h);
-	printf("Floor color :%d,%d,%d,%u\n", cbfile->colors[0].rgb.c[0], cbfile->colors[0].rgb.c[1],\
-			cbfile->colors[0].rgb.c[2], cbfile->colors[0].color);
-	printf("Ceili color :%d,%d,%d,%u\n", cbfile->colors[1].rgb.c[0],cbfile->colors[1].rgb.c[1],\
-			cbfile->colors[1].rgb.c[2], cbfile->colors[1].color);
+	printf("Floor color :%d,%d,%d,%u\n", cbfile->colors[0].rgb.c[2], cbfile->colors[0].rgb.c[1],\
+			cbfile->colors[0].rgb.c[0], cbfile->colors[0].color);
+	printf("Ceili color :%d,%d,%d,%u\n", cbfile->colors[1].rgb.c[2],cbfile->colors[1].rgb.c[1],\
+			cbfile->colors[1].rgb.c[0], cbfile->colors[1].color);
 	printf("\ndimension map w - h : %d - %d\n", cbfile->d_map.w, cbfile->d_map.h);
 	printf("coordonnées joueur map w - h - o : %f - %f - %f\n\n",\
 			cbfile->pos.x, cbfile->pos.y, cbfile->pos.a);
@@ -45,10 +45,14 @@ void			*create_new_image(t_cubfile *cub)
 	return ((void*)1);
 }
 
-int				init_textures(t_cubfile *cub)
+int				init_cub(t_cubfile *cub)
 {
 	int			i;
-	//Choper et stocker la data de chaque fichier .xpm
+
+	cub->newmove = 1;
+	cub->img[1].img = NULL;
+	cub->cam.d_cam = fabs(cub->res.w / (2 * tan((PLAYER_FOV / 2) * TO_RAD)));
+	cub->cam.angle_gap = PLAYER_FOV / (double)(cub->res.w);
 	i = -1;
 	while (++i < 5)
 	{
@@ -60,61 +64,40 @@ int				init_textures(t_cubfile *cub)
 				&(cub->tex[i].depth), &(cub->tex[i].size_line),
 				&(cub->tex[i].endian));
 	}
-	return (1);
-}
-
-/*int				quit_cub(t_cubfile *cub)
-{
-	if (cub->run == 0)
-		exit(0);
-	return (0);
-}*/
-
-int				init_sprite(t_cubfile *cub)
-{
 	if (!(cub->sprite = malloc(sizeof(t_sprite) * cub->sprite_nb)))
-		return (0);
+		return (ft_error("Couldn't malloc sprites"));
+	if (!(create_new_image(cub)))
+		return (ft_error("Couldn't create mlx image"));
 	return (1);
 }
 
-void			*cubd(t_cubfile *cub, char *av)
+int				quit_cub(t_cubfile *cub)
 {
-	if (!(cub->mlx.mlx = mlx_init()))
-		return (NULL);
-	if (!(cub->mlx.win = mlx_new_window(cub->mlx.mlx, cub->res.w, cub->res.h, av)))
-		return (NULL);
-	cub->run = 1;
-	cub->newmove = 1;//permet de lancer la premiere image sans pour autant appuyer sur une touche
-	cub->img[1].img = NULL;
-	cub->cam.d_cam = fabs(cub->res.w / DCAM_DIVIDER);//distance player-ecran pour garder 60fov
-	cub->cam.angle_gap = PLAYER_FOV / (double)(cub->res.w);//angle entre chaque pixel /raycasts
-	if (!(init_textures(cub)))
-		return (NULL);
-	if (!(init_sprite(cub)))
-		return (NULL);
-	if (!(create_new_image(cub)))
-		return (NULL);
-	//system("leaks a.out");
-	mlx_hook(cub->mlx.win, KEYPRESS, 1L << 0, key_event, cub);//met newmove a 1 et modifie t_pos
-	//mlx_hook(cub->mlx.win, 17L, 0, quit_cub, cub);
-	mlx_loop_hook(cub->mlx.mlx, image_drawing, cub);//Si newmove==1,crea nvx calcul
-	mlx_loop(cub->mlx.mlx);
-	return ((void*)1);
+	mlx_destroy_window(cub->mlx.mlx, cub->mlx.win);
+	exit(0);
+	return (0);
 }
 
 int				main(int ac, char **av)
 {
-	t_cubfile	cbfile;
+	t_cubfile	cub;
+	int			x;
+	int			y;
 
-	if (!(extract_cub_file(ac, av, &cbfile)))
+	if (!(extract_cub_file(ac, av, &cub)))
 		return (-1);
-	printcubdata(&cbfile);
-	if (!cubd(&cbfile, av[1]))
-		return (0);
+	if (!(cub.mlx.mlx = mlx_init()))
+		return (-1);
+	if (!(cub.mlx.win = mlx_new_window(cub.mlx.mlx, cub.res.w, cub.res.h, av[1])))
+		return (-1);
+	if (!(init_cub(&cub)))
+		return (-1);
+	mlx_get_screen_size(cub.mlx.mlx, &x, &y);
+	mlx_hook(cub.mlx.win, KEYPRESS, 1L << 0, key_event, &cub);//met newmove a 1 et modifie t_pos
+	mlx_hook(cub.mlx.win, DESTROYNOTIFY, 0, quit_cub, &cub);
+	mlx_loop_hook(cub.mlx.mlx, image_drawing, &cub);//Si newmove==1,crea nvx calcul
+	mlx_loop(cub.mlx.mlx);
 	//system("leaks a.out");
+	//printcubdata(&cbfile);
 	return (0);
 }
-
-/*
- *
-*/

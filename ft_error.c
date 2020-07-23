@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 10:23:12 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/06/11 15:49:26 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/23 02:10:34 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 int			ft_error(const char *error)
 {
 	write(1, "Error:\n", 7);
-	perror(error);
+	write(1, error, ft_strlen(error));
 	return (0);
 }

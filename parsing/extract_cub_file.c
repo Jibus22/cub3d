@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:08:12 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/05/08 13:50:47 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/23 14:13:21 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int				get_color(char *line, t_cubfile *cbfile, int i)
 
 	if (!((c = ft_atoi(line)) < 256))
 		return (ft_error("color value is too high in .cub"));
-	cbfile->colors[--i].rgb.c[0] = c;
+	cbfile->colors[--i].rgb.c[2] = c;
 	if (!(line = ft_strchr(line, ',')) || !(ft_isdigit(*(line + 1))))
 		return (ft_error("Wrong color format in .cub"));
 	if (!((c = ft_atoi(++line)) < 256))
@@ -28,7 +28,7 @@ int				get_color(char *line, t_cubfile *cbfile, int i)
 		return (ft_error("Wrong color format in .cub"));
 	if (!((c = ft_atoi(line + 1)) < 256))
 		return (ft_error("color value is too high in .cub"));
-	cbfile->colors[i].rgb.c[2] = c;
+	cbfile->colors[i].rgb.c[0] = c;
 	return (1);
 }
 
@@ -46,12 +46,12 @@ int				extract_color_n_res(char *line, t_cubfile *cbfile, int id)
 	}
 	else if (id == R)
 	{
-		if (((i = ft_atoi(line)) < 1) || (i > 2500))
+		if (((i = ft_atoi(line)) < 10) || (i > 2500))
 			return (ft_error("resolution value is wrong in .cub"));
 		cbfile->res.w = i;
 		while (*line && *line != ' ')
 			line++;
-		if (((i = ft_atoi(line)) < 1) || (i > 2500))
+		if (((i = ft_atoi(line)) < 10) || (i > 2000))
 			return (ft_error("resolution value is wrong in .cub"));
 		cbfile->res.h = i;
 	}
