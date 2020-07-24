@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/23 15:16:18 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/24 02:25:37 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ int				quit_cub(t_cubfile *cub)
 int				main(int ac, char **av)
 {
 	t_cubfile	cub;
-	int			x;
-	int			y;
+	//int			x;
+	//int			y;
 
 	if (!(extract_cub_file(ac, av, &cub)))
 		return (-1);
@@ -92,7 +92,7 @@ int				main(int ac, char **av)
 		return (-1);
 	if (!(init_cub(&cub)))
 		return (-1);
-	mlx_get_screen_size(cub.mlx.mlx, &x, &y);
+	//mlx_get_screen_size(cub.mlx.mlx, &x, &y);
 	mlx_hook(cub.mlx.win, KEYPRESS, 1L << 0, key_event, &cub);//met newmove a 1 et modifie t_pos
 	mlx_hook(cub.mlx.win, DESTROYNOTIFY, 0, quit_cub, &cub);
 	mlx_loop_hook(cub.mlx.mlx, image_drawing, &cub);//Si newmove==1,crea nvx calcul

@@ -9,7 +9,7 @@ MLXPATH='/usr/local/'
 MLXINC=$MLXPATH'include'
 MLXLIB=$MLXPATH'lib'
 MLXFLAG='-lmlx -framework OpenGL -framework AppKit'
-ALL_C_FILES='./*.c ./parsing/*.c'
+ALL_C_FILES='./src/rendering/*.c ./src/parsing/*.c'
 
 if [ "$2" = "san" ]; then
 	$COMP $SAN -I  $MLXINC -I $LIBFTPATH -I $INCLUDEPATH $ALL_C_FILES $LIBFT -L $MLXLIB $MLXFLAG;
