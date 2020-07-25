@@ -6,7 +6,7 @@
 #    By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/23 16:42:04 by jle-corr          #+#    #+#              #
-#    Updated: 2020/07/24 17:06:58 by jle-corr         ###   ########.fr        #
+#    Updated: 2020/07/25 20:20:29 by jle-corr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,13 +68,13 @@ libft_all :
 
 
 
-$(NAME) : message $(OBJ)
-	@echo "\n$(END)$(BLUE)Making $(NAME)\n$(END)$(GREY)"
+$(NAME) : message $(OBJ) $(INCLUDEPATH)/cub3d.h
+	@echo "\n$(END)$(BLUE)Making $(NAME)$(END)$(GREY)"
 	clang -o $@ $(OBJ) $(LIBFT) -L $(MLXLIB) $(MLXFLAG)
 	@echo "\n$(END)$(BLUE)$(NAME) is built$(END)"
 
 message :
-	@echo "\n$(END)$(BLUE)Making objetcs\n$(END)$(GREY)"
+	@echo "\n$(END)$(BLUE)Making objetcs$(END)$(GREY)"
 
 
 
@@ -87,14 +87,18 @@ $(OBJRENDERINGPATH)/%.o : $(RENDERINGPATH)/%.c
 
 
 #CLEAN
-
 .PHONY : clean fclean re
 
 clean :
-	@echo "$(YELLOW)removing objects\n$(END)$(YELLO)"
+	@echo "$(END)$(YELLOW)\nremoving $(NAME) objects$(END)$(YELLO)"
 	rm -rf $(OBJ)
+	@echo "$(END)$(YELLOW)cleaning libft objects$(END)"
+	@make clean -C $(LIBFTPATH)
 
 fclean : clean
+	@echo "$(END)$(YELLOW)\nremoving $(NAME)$(END)$(YELLO)"
 	rm -f $(NAME)
+	@echo "$(END)$(YELLOW)\nremoving libft.a$(END)"
+	@make fclean -C $(LIBFTPATH)
 
 re : fclean all
