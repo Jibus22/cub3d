@@ -4,17 +4,17 @@ COMP='clang -Wall -Wextra -Werror'
 SAN='-g3 -fsanitize=address -fno-omit-frame-pointer'
 LIBFTPATH='./libft/'
 LIBFT='./libft/libft.a'
-INCLUDEPATH='/Users/lecorre/42/cub3d/includes'
-MLXPATH='/usr/local/'
-MLXINC=$MLXPATH'include'
-MLXLIB=$MLXPATH'lib'
+INCLUDEPATH='./includes'
+MLXPATH='./minilibx_mms_20200219'
+MLXINC=$MLXPATH
+MLXLIB=$MLXPATH
 MLXFLAG='-lmlx -framework OpenGL -framework AppKit'
 ALL_C_FILES='./src/rendering/*.c ./src/parsing/*.c'
 
 if [ "$2" = "san" ]; then
 	$COMP $SAN -I  $MLXINC -I $LIBFTPATH -I $INCLUDEPATH $ALL_C_FILES $LIBFT -L $MLXLIB $MLXFLAG;
 else
-	$COMP -I $MLXINC -I $LIBFTPATH -I $INCLUDEPATH $ALL_C_FILES $LIBFT -L $MLXLIB $MLXFLAG;
+	$COMP -I $MLXINC -I $LIBFTPATH -I $INCLUDEPATH $ALL_C_FILES $LIBFT $MLXFLAG;
 fi;
 
 if [ "$2" = "san" ]; then

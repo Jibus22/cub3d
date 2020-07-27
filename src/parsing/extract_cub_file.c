@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:08:12 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/23 14:13:21 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/27 19:52:57 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,17 @@ int				extract_color_n_res(char *line, t_cubfile *cbfile, int id)
 		return (ft_error("wrong color or resolution format in .cub"));
 	return (1);
 }
+
+		/*cbfile->res.w = ft_atoi(line);
+		while (*line && *line != ' ')
+			line++;
+		cbfile->res.h = ft_atoi(line);
+		if (cbfile->res.w < 10 || cbfile->res.h < 10)
+			return (ft_error("resolution value is too low in .cub"));
+		else if (cbfile->res.w > cbfile->screensize.w)
+			cbfile->res.w = cbfile->screensize.w;
+		else if (cbfile->res.h > cbfile->screensize.h)
+			cbfile->res.h = cbfile->screensize.h;*/
 
 int				extract_elements(char *line, t_cubfile *cbfile)
 {

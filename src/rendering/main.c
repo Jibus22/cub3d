@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/24 02:25:37 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/27 19:53:01 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int				init_cub(t_cubfile *cub)
 	cub->img[1].img = NULL;
 	cub->cam.d_cam = fabs(cub->res.w / (2 * tan((PLAYER_FOV / 2) * TO_RAD)));
 	cub->cam.angle_gap = PLAYER_FOV / (double)(cub->res.w);
+	//mlx_get_screen_size(cub->mlx.mlx, &(cub->screensize.w), &(cub->screensize.h));
 	i = -1;
 	while (++i < 5)
 	{
@@ -92,7 +93,6 @@ int				main(int ac, char **av)
 		return (-1);
 	if (!(init_cub(&cub)))
 		return (-1);
-	//mlx_get_screen_size(cub.mlx.mlx, &x, &y);
 	mlx_hook(cub.mlx.win, KEYPRESS, 1L << 0, key_event, &cub);//met newmove a 1 et modifie t_pos
 	mlx_hook(cub.mlx.win, DESTROYNOTIFY, 0, quit_cub, &cub);
 	mlx_loop_hook(cub.mlx.mlx, image_drawing, &cub);//Si newmove==1,crea nvx calcul

@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/23 14:16:22 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/07/27 19:33:26 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,7 @@ typedef struct		s_spritedisplay
 typedef struct		s_cubfile
 {
 	t_color			colors[2];
+	t_isqur			screensize;
 	t_isqur			res;
 	char			*tx_path[6];
 	int				nb_elements;
