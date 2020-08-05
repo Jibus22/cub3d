@@ -8,7 +8,7 @@ INCLUDEPATH='./includes'
 MLXPATH='./minilibx_mms_20200219'
 MLXINC=$MLXPATH
 MLXLIB=$MLXPATH
-MLXFLAG='-lmlx -framework OpenGL -framework AppKit'
+MLXFLAG='-L '$MLXPATH' -lmlx -framework AppKit libmlx.dylib'
 ALL_C_FILES='./src/rendering/*.c ./src/parsing/*.c'
 
 if [ "$2" = "san" ]; then

@@ -6,20 +6,11 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 17:00:50 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/20 18:51:12 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/06 01:23:14 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void			printspritedata(t_sprite *sp)
-{
-	printf("cellw:%-8d cellh:%-8d dist:%-8.2f\nH:%-8d\
-	W:%-8d alpha:%-8.2f\npm:%-8d pl:%-8d pr:%-8d fh:%-8d lh:%-8d\n\n",
-			sp->cell.w, sp->cell.h, sp->dist, sp->height, sp->width,
-			sp->alpha, sp->mid, sp->left, sp->right, sp->firsthit, sp->lasthit);
-	fflush(stdout);
-}
 
 /*
 ** initialize_sprite calculate all the theorical sprite display on the
@@ -41,9 +32,9 @@ void			sprite_angle_calculation(t_sprite *sp, t_cubfile *cub)
 	sp->alpha = cub->pos.a + (PLAYER_FOV / 2);
 	if (sp->alpha >= 360.0)
 		sp->alpha -= 360.0;
-	if (sp->vy < 0.0)//quart 1 et 2
+	if (sp->vy < 0.0)
 		sp->alpha -= (acos(sp->vx / sp->dist) / TO_RAD);
-	else//quart 3 et 4
+	else
 		sp->alpha -= (360.0 - (acos(sp->vx / sp->dist) / TO_RAD));
 	if (sp->alpha < 0.0)
 		sp->alpha += 360.0;
@@ -70,7 +61,6 @@ void			initialize_sprite(t_sprite *sp, int y, int x, t_cubfile *cub)
 	sp->left = sp->mid - (sp->width / 2);
 	sp->right = sp->mid + (sp->width / 2);
 	sp->justhited = 1;
-	//printspritedata(sp);
 }
 
 /*

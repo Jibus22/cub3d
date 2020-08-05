@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 20:27:03 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/21 18:19:37 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/06 01:22:23 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void			column_drawing(t_cubfile *cub, double ray, int col_x, int col_y)
 	while (col_y < c.floor)
 	{
 		tex.y = (int)(tex.ratio_y * tex.wall_y++);
-		tex.color = ((t_color*)cub->tex[cub->side].adr)
-			[(int)(cub->tex_x) + (tex.y * cub->tex[cub->side].w)];
+		tex.color = ft_get_color(&(cub->tex[cub->side]),
+				(int)(cub->tex_x), tex.y);
 		ft_pixel_put(&(cub->img[0]), col_x, col_y++, tex.color.color);
 	}
 	while (col_y < cub->res.h)
@@ -86,29 +86,6 @@ void			restore_sprite(t_cubfile *cub)
 	}
 }
 
-void			pprintspritedata(t_sprite *sp)
-{
-	printf("cellw:%-8d cellh:%-8d dist:%-8.2f\nH:%-8d\
-	W:%-8d alpha:%-8.2f\npm:%-8d pl:%-8d pr:%-8d fh:%-8d lh:%-8d\n\n",
-			sp->cell.w, sp->cell.h, sp->dist, sp->height, sp->width,
-			sp->alpha, sp->mid, sp->left, sp->right, sp->firsthit, sp->lasthit);
-	fflush(stdout);
-}
-
-void			printtsprite(t_cubfile *cub)
-{
-	int			i;
-
-	i = -1;
-	while (++i < cub->sprite_nb)
-		if (cub->sprite[i].dist > -1.0)
-		{
-			printf("index %-4d :\n", i);
-			fflush(stdout);
-			pprintspritedata(&(cub->sprite[i]));
-		}
-}
-
 /*
 **	If a new move from the player is recorded, calculations goes on :
 **	image_drawing cast rays, one by one, throught the FOV of the player, from
@@ -117,32 +94,39 @@ void			printtsprite(t_cubfile *cub)
 **	Finally, move or not, the drawn image is put in the window.
 */
 
-int				image_drawing(t_cubfile *cub)
+int				wall_drawing(t_cubfile *cub)
 {
 	t_screenray	ray;
 
+	ray.anglecam = PLAYER_FOV / 2;
+	ray.angle = cub->pos.a + ray.anglecam;
+	ray.col_x = -1;
+	while (++(ray.col_x) < cub->res.w)
+	{
+		if (ray.angle < 0.0)
+			ray.angle += 360.0;
+		else if (ray.angle >= 360.0)
+			ray.angle -= 360.0;
+		ray.ray = cos(ray.anglecam * TO_RAD) *
+		raycast(cub, ray.angle, ray.col_x);
+		column_drawing(cub, ray.ray, ray.col_x, 0);
+		ray.angle -= cub->cam.angle_gap;
+		ray.anglecam -= cub->cam.angle_gap;
+	}
+	return (1);
+}
+
+int				image_drawing(t_cubfile *cub)
+{
 	if (cub->newmove == 1)
 	{
+		mlx_clear_window(cub->mlx.mlx, cub->mlx.win);
 		restore_sprite(cub);
-		ray.anglecam = PLAYER_FOV / 2;
-		ray.angle = cub->pos.a + ray.anglecam;
-		ray.col_x = -1;
-		while (++(ray.col_x) < cub->res.w)
-		{
-			if (ray.angle < 0.0)
-				ray.angle += 360.0;
-			else if (ray.angle >= 360.0)
-				ray.angle -= 360.0;
-			ray.ray = cos(ray.anglecam * TO_RAD) *
-				raycast(cub, ray.angle, ray.col_x);
-			column_drawing(cub, ray.ray, ray.col_x, 0);
-			ray.angle -= cub->cam.angle_gap;
-			ray.anglecam -= cub->cam.angle_gap;
-		}
-		//printtsprite(cub);
+		wall_drawing(cub);
 		sprite_drawing(cub);
+		mlx_put_image_to_window(cub->mlx.mlx, cub->mlx.win,
+				cub->img[0].img, 0, 0);
+		cub->newmove = 0;
 	}
-	mlx_put_image_to_window(cub->mlx.mlx, cub->mlx.win, cub->img[0].img, 0, 0);
-	cub->newmove = 0;
 	return (1);
 }

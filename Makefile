@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
+#    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/23 16:42:04 by jle-corr          #+#    #+#              #
-#    Updated: 2020/07/27 19:51:15 by jle-corr         ###   ########.fr        #
+#    Updated: 2020/08/05 16:00:46 by jle-corr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,15 @@ RED = \033[1;31m
 END = \033[0m
 
 #INCLUDE
-INCLUDEPATH = ./includes
+INCLUDEPATH = includes
 MLXPATH = minilibx_mms_20200219
 LIBFTPATH = libft
 
+INCLUDES = $(INCLUDEPATH)/*.h
+
 #LIB
 LIBFT = $(LIBFTPATH)/libft.a
+LIBMLX = libmlx.dylib
 
 #FLAG
 FLAGS = -Wall -Wextra -Werror
@@ -44,7 +47,7 @@ PARSING = $(addprefix $(PARSINGPATH)/, extract_cub_file.c handle_map.c \
 		  verify_map.c)
 RENDERING = $(addprefix $(RENDERINGPATH)/, ft_error.c ft_pixel_put.c \
 			image_drawing.c key_event.c main.c raycast.c raycast_utils.c \
-			sprite_drawing.c record_sprite.c)
+			sprite_drawing.c record_sprite.c save_bmp.c)
 
 #OBJS
 OBJ = $(PARSING:$(PARSINGPATH)/%.c=$(OBJPARSINGPATH)/%.o)
@@ -67,13 +70,13 @@ mk_libft :
 mk_mlx :
 	@echo "\n$(END)$(BLUE)Checking mlx$(END)$(GREY)"
 	@make -C $(MLXPATH)
+	cp ./minilibx_mms_20200219/libmlx.dylib .
 
 
 
 $(NAME) : message $(OBJ) $(INCLUDEPATH)/cub3d.h
-	cp ./minilibx_mms_20200219/libmlx.dylib .
 	@echo "\n$(END)$(BLUE)Making $(NAME)$(END)$(GREY)"
-	clang -o $@ $(OBJ) $(LIBFT) $(MLXFLAG)
+	clang -o $@ $(OBJ) $(LIBFT) -L $(MLXPATH) $(MLXFLAG) $(LIBMLX)
 	@echo "\n$(END)$(GREEN)$(NAME) is built$(END)"
 
 message :
@@ -81,10 +84,10 @@ message :
 
 
 
-$(OBJPARSINGPATH)/%.o : $(PARSINGPATH)/%.c
+$(OBJPARSINGPATH)/%.o : $(PARSINGPATH)/%.c $(INCLUDES)
 	clang $(FLAGS) -I $(MLXPATH) -I $(LIBFTPATH) -I $(INCLUDEPATH) -c $< -o $@
 
-$(OBJRENDERINGPATH)/%.o : $(RENDERINGPATH)/%.c
+$(OBJRENDERINGPATH)/%.o : $(RENDERINGPATH)/%.c $(INCLUDES)
 	clang $(FLAGS) -I $(MLXPATH) -I $(LIBFTPATH) -I $(INCLUDEPATH) -c $< -o $@
 
 
@@ -102,8 +105,10 @@ clean :
 
 fclean : clean
 	@echo "$(END)$(RED)\nremoving $(NAME)$(END)$(GREY)"
-	rm -f $(NAME)
+	@rm -f $(NAME)
 	@echo "$(END)$(RED)\nremoving libft.a$(END)"
 	@make fclean -C $(LIBFTPATH)
+	@echo "$(END)$(RED)\nremoving libmlx.dylib$(END)"
+	@rm -f libmlx.dylib
 
 re : fclean all

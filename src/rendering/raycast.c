@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 16:38:38 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/23 01:22:03 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/03 20:32:27 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ double			raytwo(t_ray *ray, double angle, t_cubfile *cub)
 		ray->y.y -= 1.0;
 		ray->y.x += ray->y.xa;
 	}
-	while (ray->x.y > 0 && ray->x.y < cub->d_map.w && ray->x.x > 0 &&
+	while (ray->x.y > 0 && ray->x.x > 0 && (int)ray->x.y > -1 &&
 			cub->map[(int)ray->x.y][(int)(ray->x.x - 0.1)] != '1')
 	{
 		if (cub->map[(int)(ray->x.y)][(int)(ray->x.x - 0.1)] == '2')

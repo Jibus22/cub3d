@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 12:41:21 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/07/21 01:27:06 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/06 00:58:36 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void			initialize_sprite_display(t_cubfile *cub,
 	if (sprite->lasthit > sprite->right)
 		screen->x_end = sprite->right;
 	else
-		screen->x_end = sprite->lasthit;
+		screen->x_end = sprite->lasthit + 1;
 }
 
 /*
@@ -71,11 +71,10 @@ void			draw_line(t_cubfile *cub, t_spritedisplay sc, int tex_y)
 	int			tex_x;
 	t_color		color;
 
-	while (sc.x_start <= sc.x_end)
+	while (sc.x_start < sc.x_end)
 	{
 		tex_x = (int)(sc.ratio_x * (sc.tex_wall_x)++);
-		color = ((t_color*)cub->tex[TX_SPRITE].adr)
-			[tex_y * cub->tex[TX_SPRITE].w + tex_x];
+		color = ft_get_color(&(cub->tex[TX_SPRITE]), tex_x, tex_y);
 		if (color.color)
 			ft_pixel_put(&(cub->img[0]), sc.x_start, sc.y_start, color.color);
 		(sc.x_start)++;
