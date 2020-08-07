@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
+CC = clang
 CFLAGS = -Wall -Wextra -Werror
 DEPS = libft.h
 OBJDIR = libftobj

@@ -45,15 +45,15 @@
 */
 
 # define KEYPRESS	2
-# define DESTROYNOTIFY	17
+# define DESTROYNOTIFY	33
 
 /*
 **	macosx key controls
 */
 
 # define MLXK_ESC	65307
-# define MLXK_Z	119
-# define MLXK_Q	97
+# define MLXK_Z	122
+# define MLXK_Q	113
 # define MLXK_S	115
 # define MLXK_D	100
 # define MLXK_LEFT	65361

@@ -130,8 +130,12 @@ int				extract_cub_file(int ac, char **av, t_cubfile *cub)
 	if (ac == 3 && ((cub->save = ft_strncmp(av[2], "--save", 6)) ||
 				ft_strlen(av[2]) != 6))
 		return (ft_error("Wrong 2nd argument"));
+	printf("%p\n", cub->mlx.mlx);
+	fflush(stdout);
 	mlx_get_screen_size(cub->mlx.mlx, &(cub->screensize.w),
 			&(cub->screensize.h));
+	printf("BLA");
+	fflush(stdout);
 	cub->colors[0].color = 0;
 	cub->colors[1].color = 0;
 	if (!(handle_elements(cub, &gnl)))

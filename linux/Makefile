@@ -10,21 +10,17 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3d
-
-#COLORS
-BLUE = \033[1;34m
-GREY = \033[8;90m
-GREEN = \033[1;36m
-RED = \033[1;31m
-END = \033[0m
+NAME = Cub3D
 
 #INCLUDE
 INCLUDEPATH = includes
-MLXPATH = minilibx_opengl_20191021
+MLXPATH = minilibx-linux
 LIBFTPATH = libft
 
 INCLUDES = $(INCLUDEPATH)/*.h
+INCLUDES += $(MLXPATH)/mlx.h
+INCLUDES += $(LIBFTPATH)/libft.h
+INC = $(addprefix -I , $(INCLUDEPATH)/ $(MLXPATH)/ $(LIBFTPATH)/)
 
 #LIB
 LIBFT = $(LIBFTPATH)/libft.a
@@ -32,7 +28,7 @@ LIBMLX = $(MLXPATH)/libmlx.a
 
 #FLAG
 FLAGS = -Wall -Wextra -Werror
-MLXFLAG = -lmlx -lXext -lX11
+MLXFLAG = -lmlx -lm -lbsd -lXext -lX11
 
 #SRC & OBJ PATH
 SRCPATH = ./src
@@ -64,30 +60,30 @@ make_objdir:
 	@if [ ! -d $(OBJRENDERINGPATH) ]; then mkdir $(OBJRENDERINGPATH); fi
 
 mk_libft :
-	@echo "\n$(END)$(BLUE)Checking libft$(END)$(GREY)"
+	@echo "\nChecking libft"
 	@make -C $(LIBFTPATH)
 
 mk_mlx :
-	@echo "\n$(END)$(BLUE)Checking mlx$(END)$(GREY)"
+	@echo "\nChecking mlx"
 	@make -C $(MLXPATH)
 
 
 
 $(NAME) : message $(OBJ) $(INCLUDEPATH)/cub3d.h
-	@echo "\n$(END)$(BLUE)Making $(NAME)$(END)$(GREY)"
-	clang -o $@ $(OBJ) $(LIBFT) -L $(MLXPATH) $(MLXFLAG)
-	@echo "\n$(END)$(GREEN)$(NAME) is built$(END)"
+	@echo "\nMaking $(NAME)"
+	clang -o $@ $(INC) $(OBJ) $(LIBFT) -L $(MLXPATH) $(MLXFLAG)
+	@echo "\n$(NAME) is built"
 
 message :
-	@echo "\n$(END)$(BLUE)Making objetcs$(END)$(GREY)"
+	@echo "\nMaking objetcs"
 
 
 
 $(OBJPARSINGPATH)/%.o : $(PARSINGPATH)/%.c $(INCLUDES)
-	clang $(FLAGS) -I $(MLXPATH) -I $(LIBFTPATH) -I $(INCLUDEPATH) -c $< -o $@
+	clang $(FLAGS) $(INC) -c $< -o $@
 
 $(OBJRENDERINGPATH)/%.o : $(RENDERINGPATH)/%.c $(INCLUDES)
-	clang $(FLAGS) -I $(MLXPATH) -I $(LIBFTPATH) -I $(INCLUDEPATH) -c $< -o $@
+	clang $(FLAGS) $(INC) -c $< -o $@
 
 
 
@@ -95,19 +91,19 @@ $(OBJRENDERINGPATH)/%.o : $(RENDERINGPATH)/%.c $(INCLUDES)
 .PHONY : clean fclean re
 
 clean :
-	@echo "$(END)$(RED)\nremoving $(NAME) objects$(END)$(GREY)"
+	@echo "\nremoving $(NAME) objects"
 	rm -rf $(OBJ)
-	@echo "$(END)$(RED)cleaning libft objects$(END)"
+	@echo "cleaning libft objects"
 	@make clean -C $(LIBFTPATH)
-	@echo "$(END)$(RED)cleaning MLX$(END)"
+	@echo "cleaning MLX"
 	@make clean -C $(MLXPATH)
 
 fclean : clean
-	@echo "$(END)$(RED)\nremoving $(NAME)$(END)$(GREY)"
+	@echo "\nremoving $(NAME)"
 	@rm -f $(NAME)
-	@echo "$(END)$(RED)\nremoving libft.a$(END)"
+	@echo "\nremoving libft.a"
 	@make fclean -C $(LIBFTPATH)
-	@echo "$(END)$(RED)\nremoving libmlx.a$(END)"
+	@echo "\nremoving libmlx.a"
 	@rm -f $(LIBMLX)
 
 re : fclean all
