@@ -76,7 +76,6 @@ int				quit_cub(t_cubfile *cub)
 	if (cub->save)
 		mlx_destroy_window(cub->mlx.mlx, cub->mlx.win);
 	free(cub->mlx.mlx);
-	exit(0);
 	return (0);
 }
 
@@ -84,9 +83,9 @@ int				main(int ac, char **av)
 {
 	t_cubfile	cub;
 
-	if (!(extract_cub_file(ac, av, &cub)))
-		return (-1);
 	if (!(cub.mlx.mlx = mlx_init()))
+		return (-1);
+	if (!(extract_cub_file(ac, av, &cub)))
 		return (-1);
 	if (!(init_cub(&cub)))
 		return (-1);

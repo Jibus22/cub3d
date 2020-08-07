@@ -83,9 +83,9 @@ int				main(int ac, char **av)
 {
 	t_cubfile	cub;
 
-	if (!(extract_cub_file(ac, av, &cub)))
-		return (-1);
 	if (!(cub.mlx.mlx = mlx_init()))
+		return (-1);
+	if (!(extract_cub_file(ac, av, &cub)))
 		return (-1);
 	if (!(init_cub(&cub)))
 		return (-1);
