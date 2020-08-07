@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/06 22:08:32 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/07 15:04:49 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,14 +256,12 @@ typedef struct			s_cubfile
 	int					sprite_nb;
 	int					save;
 	int					newmove;
-	int					run;
 	t_isqur				d_map;
 	char				**map;
 	t_pos				pos;
 	t_mlx				mlx;
 	t_img				img[1];
 	t_cam				cam;
-	int					imgbuf;
 	int					side;
 	double				tex_x;
 	t_tex				tex[5];

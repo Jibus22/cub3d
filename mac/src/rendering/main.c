@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/06 23:16:21 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/07 15:20:16 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int				init_cub(t_cubfile *cub)
 	cub->newmove = 1;
 	cub->cam.d_cam = fabs(cub->res.w / (2 * tan((PLAYER_FOV / 2) * TO_RAD)));
 	cub->cam.angle_gap = PLAYER_FOV / (double)(cub->res.w);
-	cub->imgbuf = 0;
 	i = -1;
 	while (++i < 5)
 	{
@@ -66,6 +65,13 @@ int				quit_cub(t_cubfile *cub)
 	while (++i < 5)
 		mlx_destroy_image(cub->mlx.mlx, cub->tex[i].img);
 	mlx_destroy_image(cub->mlx.mlx, cub->img[0].img);
+	i = -1;
+	while (++i < 5)
+		free(cub->tx_path[i]);
+	i = -1;
+	while (++i < cub->d_map.h)
+		free(cub->map[i]);
+	free(cub->map);
 	free(cub->sprite);
 	if (cub->save)
 		mlx_destroy_window(cub->mlx.mlx, cub->mlx.win);
