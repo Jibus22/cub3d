@@ -1,114 +1,47 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    makefile                                           :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/07/23 16:42:04 by jle-corr          #+#    #+#              #
-#    Updated: 2020/08/05 16:00:46 by jle-corr         ###   ########.fr        #
+#    Created: 2020/08/07 14:17:11 by jle-corr          #+#    #+#              #
+#    Updated: 2020/08/07 14:25:49 by jle-corr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3d
+LINUXPATH = ./linux
+MACPATH = ./mac
 
-#COLORS
-BLUE = \033[1;34m
-GREY = \033[8;90m
-GREEN = \033[1;36m
-RED = \033[1;31m
-END = \033[0m
+all : mk_linux
+	make -C $(LINUXPATH)
 
-#INCLUDE
-INCLUDEPATH = includes
-MLXPATH = minilibx_mms_20200219
-LIBFTPATH = libft
+mac : mk_mac
 
-INCLUDES = $(INCLUDEPATH)/*.h
+mk_linux :
+	make -C $(LINUXPATH)
 
-#LIB
-LIBFT = $(LIBFTPATH)/libft.a
-LIBMLX = libmlx.dylib
-
-#FLAG
-FLAGS = -Wall -Wextra -Werror
-MLXFLAG = -lmlx -framework OpenGL -framework AppKit
-
-#SRC & OBJ PATH
-SRCPATH = ./src
-PARSINGPATH = $(SRCPATH)/parsing
-RENDERINGPATH = $(SRCPATH)/rendering
-OBJPARSINGPATH = $(PARSINGPATH)/obj
-OBJRENDERINGPATH = $(RENDERINGPATH)/obj
+mk_mac :
+	make -C $(MACPATH)
 
 
-#SRCS
-PARSING = $(addprefix $(PARSINGPATH)/, extract_cub_file.c handle_map.c \
-		  verify_map.c)
-RENDERING = $(addprefix $(RENDERINGPATH)/, ft_error.c ft_pixel_put.c \
-			image_drawing.c key_event.c main.c raycast.c raycast_utils.c \
-			sprite_drawing.c record_sprite.c save_bmp.c)
-
-#OBJS
-OBJ = $(PARSING:$(PARSINGPATH)/%.c=$(OBJPARSINGPATH)/%.o)
-OBJ += $(RENDERING:$(RENDERINGPATH)/%.c=$(OBJRENDERINGPATH)/%.o)
-
-
-
-all : make_objdir mk_libft mk_mlx $(NAME)
-
-
-
-make_objdir:
-	@if [ ! -d $(OBJPARSINGPATH) ]; then mkdir $(OBJPARSINGPATH); fi
-	@if [ ! -d $(OBJRENDERINGPATH) ]; then mkdir $(OBJRENDERINGPATH); fi
-
-mk_libft :
-	@echo "\n$(END)$(BLUE)Checking libft$(END)$(GREY)"
-	@make -C $(LIBFTPATH)
-
-mk_mlx :
-	@echo "\n$(END)$(BLUE)Checking mlx$(END)$(GREY)"
-	@make -C $(MLXPATH)
-	cp ./minilibx_mms_20200219/libmlx.dylib .
-
-
-
-$(NAME) : message $(OBJ) $(INCLUDEPATH)/cub3d.h
-	@echo "\n$(END)$(BLUE)Making $(NAME)$(END)$(GREY)"
-	clang -o $@ $(OBJ) $(LIBFT) -L $(MLXPATH) $(MLXFLAG) $(LIBMLX)
-	@echo "\n$(END)$(GREEN)$(NAME) is built$(END)"
-
-message :
-	@echo "\n$(END)$(BLUE)Making objetcs$(END)$(GREY)"
-
-
-
-$(OBJPARSINGPATH)/%.o : $(PARSINGPATH)/%.c $(INCLUDES)
-	clang $(FLAGS) -I $(MLXPATH) -I $(LIBFTPATH) -I $(INCLUDEPATH) -c $< -o $@
-
-$(OBJRENDERINGPATH)/%.o : $(RENDERINGPATH)/%.c $(INCLUDES)
-	clang $(FLAGS) -I $(MLXPATH) -I $(LIBFTPATH) -I $(INCLUDEPATH) -c $< -o $@
-
-
-
-#CLEAN
-.PHONY : clean fclean re
+#CLEAN LINUX
 
 clean :
-	@echo "$(END)$(RED)\nremoving $(NAME) objects$(END)$(GREY)"
-	rm -rf $(OBJ)
-	@echo "$(END)$(RED)cleaning libft objects$(END)"
-	@make clean -C $(LIBFTPATH)
-	@echo "$(END)$(RED)cleaning MLX$(END)"
-	@make clean -C $(MLXPATH)
+	make clean -C $(LINUXPATH)
 
 fclean : clean
-	@echo "$(END)$(RED)\nremoving $(NAME)$(END)$(GREY)"
-	@rm -f $(NAME)
-	@echo "$(END)$(RED)\nremoving libft.a$(END)"
-	@make fclean -C $(LIBFTPATH)
-	@echo "$(END)$(RED)\nremoving libmlx.dylib$(END)"
-	@rm -f libmlx.dylib
+	make fclean -C $(LINUXPATH)
 
 re : fclean all
+
+
+#CLEAN MAC
+
+cleanmac :
+	make clean -C $(MACPATH)
+
+fcleanmac : cleanmac
+	make fclean -C $(MACPATH)
+
+remac : fcleanmac mac

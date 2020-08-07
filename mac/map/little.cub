@@ -1,0 +1,23 @@
+R 600 600
+
+NO ./textures/stone.xpm
+SO ./textures/blue_stone.xpm
+WE ./textures/gold_block.xpm
+EA ./textures/red_wool.xpm
+
+S ./textures/barrel.xpm
+
+F 255,0,0
+C 0,0,255
+
+
+
+221121121
+200000002
+100000001
+100000001
+1000E0002
+100000201
+100000001
+200000002
+121121121
