@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:08:12 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/06 21:51:28 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/08 18:41:27 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ int				extract_color_n_res(char *line, t_cubfile *cub, int id, int i)
 		cub->res.h = ft_atoi(line);
 		if (cub->res.w < 10 || cub->res.h < 10)
 			return (ft_error("resolution value is too low in .cub"));
-		if (cub->res.w > cub->screensize.w)
+		if (cub->res.w > cub->screensize.w && cub->save)
 			cub->res.w = cub->screensize.w;
-		if (cub->res.h > cub->screensize.h)
+		if (cub->res.h > cub->screensize.h && cub->save)
 			cub->res.h = cub->screensize.h;
 	}
 	else

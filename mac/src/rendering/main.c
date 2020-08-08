@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/08 12:39:45 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/08 18:34:51 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,12 @@ int				quit_cub(t_cubfile *cub)
 	return (0);
 }
 
+int				refresh(t_cubfile *cub)
+{
+	cub->newmove = 1;
+	return (1);
+}
+
 int				main(int ac, char **av)
 {
 	t_cubfile	cub;
@@ -103,6 +109,7 @@ int				main(int ac, char **av)
 		return (ft_error("Failed to create mlx window"));
 	mlx_hook(cub.mlx.win, KEYPRESS, 1L << 0, key_event, &cub);
 	mlx_hook(cub.mlx.win, DESTROYNOTIFY, 0, quit_cub, &cub);
+	mlx_hook(cub.mlx.win, 15, 1L << 16, refresh, &cub);
 	mlx_loop_hook(cub.mlx.mlx, image_drawing, &cub);
 	mlx_loop(cub.mlx.mlx);
 	return (0);
