@@ -1,0 +1,15 @@
+.DS_Store
+*.un~
+*~
+*.c~
+*.swp
+a.out
+Makefile~
+cub3d
+textures/kim1.xpm
+textures/kim2.xpm
+textures/kim3.xpm
+textures/kim4.xpm
+textures/me.xpm
+textures/xlr.xpm
+map/kim.cub
