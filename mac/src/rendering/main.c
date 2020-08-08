@@ -75,6 +75,7 @@ int				quit_cub(t_cubfile *cub)
 	free(cub->sprite);
 	if (cub->save)
 		mlx_destroy_window(cub->mlx.mlx, cub->mlx.win);
+	free(cub->mlx.mlx);
 	exit(0);
 	return (0);
 }

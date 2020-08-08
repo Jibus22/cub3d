@@ -14,7 +14,6 @@ LINUXPATH = ./linux
 MACPATH = ./mac
 
 all : mk_linux
-	make -C $(LINUXPATH)
 
 mac : mk_mac
 
