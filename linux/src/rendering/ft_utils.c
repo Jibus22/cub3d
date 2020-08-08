@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 13:13:34 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/06 12:06:22 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/08 20:19:12 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ t_color			ft_get_color(t_tex *img, int x, int y)
 
 int				ft_error(const char *error)
 {
+	write(1, "Error:\n", 7);
+	write(1, error, ft_strlen(error));
+	return (0);
+}
+
+int				ft_errorfree(const char *error, char *str)
+{
+	free(str);
 	write(1, "Error:\n", 7);
 	write(1, error, ft_strlen(error));
 	return (0);

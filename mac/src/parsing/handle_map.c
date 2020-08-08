@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:11:10 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/06 12:01:50 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/08 20:25:57 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int				map_measuring(t_cubfile *cbfile, t_gnl *gnl)
 {
 	int			len;
 
-	cbfile->d_map.w = 0;
-	cbfile->d_map.h = 0;
 	while ((gnl->ret = get_next_line(gnl->fd, &(gnl->line))))
 	{
 		if (*(gnl->line) && (++(cbfile->d_map.h))
@@ -35,7 +33,10 @@ int				map_measuring(t_cubfile *cbfile, t_gnl *gnl)
 			if (cbfile->d_map.h == 0)
 				(gnl->nwline)++;
 			else
+			{
+				free(gnl->line);
 				return (ft_error("map error, empty line between"));
+			}
 		}
 		free(gnl->line);
 	}
@@ -86,12 +87,12 @@ int				map_cpy(t_cubfile *cbfile, char *line, int h)
 			cbfile->pos.a = char_to_angle(*line);
 		}
 		else
-			return (ft_error("map error, wong map character"));
+			return (0);
 		line++;
 		w++;
 	}
 	if (*(line - 1) != '1' && *(line - 1) != ' ' && *(line - 1) != '2')
-		return (ft_error("map error, wrong end of line"));
+		return (0);
 	return (1);
 }
 
@@ -115,9 +116,9 @@ int				map_recording(t_cubfile *cbfile, t_gnl *gnl)
 		if ((get_next_line(gnl->fd, &(gnl->line))) < 0)
 			return (ft_error("gnl error"));
 		if (*(gnl->line) != ' ' && *(gnl->line) != '1' && *(gnl->line) != '2')
-			return (ft_error("map error, wrong beggining of line"));
+			return (ft_errorfree("wrong char in start of map line", gnl->line));
 		if (!map_cpy(cbfile, gnl->line, i))
-			return (0);
+			return (ft_errorfree("map : wrong spawn, eol or char", gnl->line));
 		free(gnl->line);
 	}
 	cbfile->map[i] = NULL;
@@ -131,6 +132,8 @@ int				handle_map(t_cubfile *cbfile, t_gnl *gnl, char *file)
 	int			i;
 
 	cbfile->sprite_nb = 0;
+	cbfile->d_map.w = 0;
+	cbfile->d_map.h = 0;
 	if (!map_measuring(cbfile, gnl))
 		return (0);
 	if (close(gnl->fd) == -1)

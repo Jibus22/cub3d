@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:08:12 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/08 18:41:27 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/08 19:44:45 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,11 @@ int				handle_elements(t_cubfile *cub, t_gnl *gnl)
 	{
 		if ((ret = get_next_line(gnl->fd, &(gnl->line))) < 1)
 			return (ret == 0 ? ft_error(".cub not complete") : ft_error("gnl"));
-		if (*(gnl->line))
-			if (!(extract_elements(gnl->line, cub)))
-				return (0);
+		if (*(gnl->line) && !(extract_elements(gnl->line, cub)))
+		{
+			free(gnl->line);
+			return (0);
+		}
 		free(gnl->line);
 		(gnl->nwline)++;
 	}
