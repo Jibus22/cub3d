@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/07 15:20:16 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/08 12:14:48 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int				quit_cub(t_cubfile *cub)
 	if (cub->save)
 		mlx_destroy_window(cub->mlx.mlx, cub->mlx.win);
 	free(cub->mlx.mlx);
+	exit(0);
 	return (0);
 }
 
