@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/08 20:14:31 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/09 03:09:23 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,28 @@ void			*create_new_image(t_cubfile *cub, int nb)
 	return ((void*)1);
 }
 
-int				init_cub(t_cubfile *cub)
+int				init_cub(t_cubfile *c)
 {
 	int			i;
 
-	cub->newmove = 1;
-	cub->cam.d_cam = fabs(cub->res.w / (2 * tan((PLAYER_FOV / 2) * TO_RAD)));
-	cub->cam.angle_gap = PLAYER_FOV / (double)(cub->res.w);
+	c->newmove = 1;
+	c->cam.d_cam = fabs(c->res.w / (2 * tan((PLAYER_FOV / 2) * TO_RAD)));
+	c->cam.angle_gap = PLAYER_FOV / (double)(c->res.w);
 	i = -1;
 	while (++i < 5)
 	{
-		if (!(cub->tex[i].img = mlx_xpm_file_to_image(cub->mlx.mlx,
-						cub->tx_path[i], &(cub->tex[i].w),
-						&(cub->tex[i].h))))
-			return (ft_error("Couldn't load a texture xpm file"));
-		cub->tex[i].adr = mlx_get_data_addr(cub->tex[i].img,
-				&(cub->tex[i].depth), &(cub->tex[i].size_line),
-				&(cub->tex[i].endian));
+		if (!(c->tex[i].img = mlx_xpm_file_to_image(c->mlx.mlx,
+						c->tx_path[i], &(c->tex[i].w),
+						&(c->tex[i].h))))
+			return (ft_freemap("Couldn't load xpm", c->d_map.h - 1, NULL, c));
+		c->tex[i].adr = mlx_get_data_addr(c->tex[i].img,
+				&(c->tex[i].depth), &(c->tex[i].size_line),
+				&(c->tex[i].endian));
 	}
-	if (!(cub->sprite = (t_sprite*)malloc(sizeof(*(cub->sprite)) *
-					cub->sprite_nb)))
+	if (!(c->sprite = (t_sprite*)malloc(sizeof(*(c->sprite)) *
+					c->sprite_nb)))
 		return (ft_error("Couldn't malloc sprites"));
-	if (!(create_new_image(cub, 1)))
+	if (!(create_new_image(c, 1)))
 		return (ft_error("Couldn't create mlx image"));
 	return (1);
 }

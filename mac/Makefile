@@ -6,7 +6,7 @@
 #    By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/23 16:42:04 by jle-corr          #+#    #+#              #
-#    Updated: 2020/08/07 05:32:57 by jle-corr         ###   ########.fr        #
+#    Updated: 2020/08/09 02:50:04 by jle-corr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ PARSING = $(addprefix $(PARSINGPATH)/, extract_cub_file.c handle_map.c \
 		  verify_map.c)
 RENDERING = $(addprefix $(RENDERINGPATH)/, ft_utils.c image_drawing.c \
 			key_event.c main.c raycast.c raycast_utils.c \
-			sprite_drawing.c record_sprite.c save_bmp.c)
+			sprite_drawing.c record_sprite.c save_bmp.c ft_errors.c)
 
 #OBJS
 OBJ = $(PARSING:$(PARSINGPATH)/%.c=$(OBJPARSINGPATH)/%.o)

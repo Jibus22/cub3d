@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/08 20:10:26 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/09 01:50:12 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,7 +276,7 @@ typedef struct			s_cubfile
 
 int						extract_cub_file(int ac, char **av, t_cubfile *cbfile);
 int						handle_map(t_cubfile *cbfile, t_gnl *gnl, char *file);
-int						verify_map(char **map);
+int						verify_map(char **map, t_cubfile *cbfile);
 
 /*
 **	Raycast & rendering
@@ -311,7 +311,10 @@ void					ft_pixel_put(t_img *img, int x, int y,
 t_color					ft_get_color(t_tex *img, int x, int y);
 char					*ft_strnewspace(int size);
 int						ft_error(const char *error);
-int						ft_errorfree(const char *error, char *str);
+int						ft_errorfree(const char *error, char *str,
+						t_cubfile *cub, int m);
+int						ft_freemap(const char *error, int h_map,
+						char *str, t_cubfile *cub);
 void					*create_new_image(t_cubfile *cub, int nb);
 
 #endif

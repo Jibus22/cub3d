@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:11:10 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/08 20:25:57 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/09 03:09:08 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,27 +103,27 @@ int				map_cpy(t_cubfile *cbfile, char *line, int h)
 ** Then it copy the line in the map.
 */
 
-int				map_recording(t_cubfile *cbfile, t_gnl *gnl)
+int				map_recording(t_cubfile *c, t_gnl *g)
 {
 	int			i;
 
 	i = -1;
-	cbfile->pos.x = -1;
-	while (++i < cbfile->d_map.h)
+	c->pos.x = -1;
+	while (++i < c->d_map.h)
 	{
-		if (!(cbfile->map[i] = ft_strnewspace(cbfile->d_map.w)))
+		if (!(c->map[i] = ft_strnewspace(c->d_map.w)))
 			return (0);
-		if ((get_next_line(gnl->fd, &(gnl->line))) < 0)
-			return (ft_error("gnl error"));
-		if (*(gnl->line) != ' ' && *(gnl->line) != '1' && *(gnl->line) != '2')
-			return (ft_errorfree("wrong char in start of map line", gnl->line));
-		if (!map_cpy(cbfile, gnl->line, i))
-			return (ft_errorfree("map : wrong spawn, eol or char", gnl->line));
-		free(gnl->line);
+		if ((get_next_line(g->fd, &(g->line))) < 0)
+			return (ft_freemap("gnl error", i, g->line, c));
+		if (*(g->line) != ' ' && *(g->line) != '1' && *(g->line) != '2')
+			return (ft_freemap("wrong char in start of map", i, g->line, c));
+		if (!map_cpy(c, g->line, i))
+			return (ft_freemap("wrong spawn, eol or char", i, g->line, c));
+		free(g->line);
 	}
-	cbfile->map[i] = NULL;
-	if (cbfile->pos.x == -1)
-		return (ft_error("No player position in map"));
+	c->map[i] = NULL;
+	if (c->pos.x == -1)
+		return (ft_freemap("No player position in map", i - 1, NULL, c));
 	return (1);
 }
 

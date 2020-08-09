@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:08:12 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/08 19:44:45 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/09 02:53:26 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,22 +100,22 @@ int				handle_elements(t_cubfile *cub, t_gnl *gnl)
 
 	gnl->nwline = 0;
 	cub->nb_elements = 0;
+	d = -1;
+	while (++d < 5)
+		cub->tx_path[d] = NULL;
 	while (cub->nb_elements != 8)
 	{
 		if ((ret = get_next_line(gnl->fd, &(gnl->line))) < 1)
 			return (ret == 0 ? ft_error(".cub not complete") : ft_error("gnl"));
 		if (*(gnl->line) && !(extract_elements(gnl->line, cub)))
-		{
-			free(gnl->line);
-			return (0);
-		}
+			return (ft_errorfree("", gnl->line, cub, 0));
 		free(gnl->line);
 		(gnl->nwline)++;
 	}
 	ret = -1;
 	while (++ret < 5)
 		if ((d = open(cub->tx_path[ret], O_RDONLY)) < 0 || close(d) == -1)
-			return (ft_error("Couldn't open texture path"));
+			return (ft_errorfree("Couldn't open texture path", NULL, cub, 1));
 	return (gnl->nwline);
 }
 
@@ -142,7 +142,7 @@ int				extract_cub_file(int ac, char **av, t_cubfile *cub)
 		return (0);
 	if (close(gnl.fd) == -1)
 		return (0);
-	if (!(verify_map(cub->map)))
+	if (!(verify_map(cub->map, cub)))
 		return (0);
 	return (1);
 }

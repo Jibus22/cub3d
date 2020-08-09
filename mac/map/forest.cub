@@ -1,4 +1,4 @@
-R 3000 3000
+R 6000 4000
 
 NO ./textures/grocha.xpm
 SO ./textures/forest2.xpm
