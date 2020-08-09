@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/09 01:50:12 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/09 03:52:28 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,6 +311,7 @@ void					ft_pixel_put(t_img *img, int x, int y,
 t_color					ft_get_color(t_tex *img, int x, int y);
 char					*ft_strnewspace(int size);
 int						ft_error(const char *error);
+int						ft_errorbas(const char *error, t_cubfile *cub);
 int						ft_errorfree(const char *error, char *str,
 						t_cubfile *cub, int m);
 int						ft_freemap(const char *error, int h_map,

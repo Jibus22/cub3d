@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:08:12 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/09 02:53:26 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/09 03:53:01 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,14 +124,14 @@ int				extract_cub_file(int ac, char **av, t_cubfile *cub)
 	t_gnl		gnl;
 
 	if (ac < 2 || ac > 3)
-		return (ft_error("Wrong nbr of arguments"));
+		return (ft_errorbas("Wrong nbr of arguments", cub));
 	if ((gnl.fd = open(av[1], O_RDONLY)) < 0 ||
 			!(ft_strnstr(av[1], ".cub", ft_strlen(av[1]))))
-		return (ft_error("Couldn't open file or wrong format"));
+		return (ft_errorbas("Couldn't open file or wrong format", cub));
 	cub->save = 1;
 	if (ac == 3 && ((cub->save = ft_strncmp(av[2], "--save", 6)) ||
 				ft_strlen(av[2]) != 6))
-		return (ft_error("Wrong 2nd argument"));
+		return (ft_errorbas("Wrong 2nd argument", cub));
 	mlx_get_screen_size(cub->mlx.mlx, &(cub->screensize.w),
 			&(cub->screensize.h));
 	cub->colors[0].color = 0;
