@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 18:11:10 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/09 03:09:08 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/09 03:35:27 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,29 @@
 ** between and if the height of the map is over 2.
 */
 
-int				map_measuring(t_cubfile *cbfile, t_gnl *gnl)
+int				map_measuring(t_cubfile *c, t_gnl *g)
 {
 	int			len;
 
-	while ((gnl->ret = get_next_line(gnl->fd, &(gnl->line))))
+	while ((g->ret = get_next_line(g->fd, &(g->line))))
 	{
-		if (*(gnl->line) && (++(cbfile->d_map.h))
-				&& (len = ft_strlen(gnl->line)))
-			cbfile->d_map.w = ((len > cbfile->d_map.w) ?
-					len : cbfile->d_map.w);
+		if (*(g->line) && (++(c->d_map.h))
+				&& (len = ft_strlen(g->line)))
+			c->d_map.w = ((len > c->d_map.w) ?
+					len : c->d_map.w);
 		else
 		{
-			if (cbfile->d_map.h == 0)
-				(gnl->nwline)++;
+			if (c->d_map.h == 0)
+				(g->nwline)++;
 			else
-			{
-				free(gnl->line);
-				return (ft_error("map error, empty line between"));
-			}
+				return (ft_errorfree("empty map line between", g->line, c, 1));
 		}
-		free(gnl->line);
+		free(g->line);
 	}
-	if (gnl->ret == -1)
+	if (g->ret == -1)
 		return (ft_error("gnl error"));
-	free(gnl->line);
-	return ((cbfile->d_map.h < 3 ? 0 : 1));
+	free(g->line);
+	return ((c->d_map.h < 3 ? 0 : 1));
 }
 
 /*
