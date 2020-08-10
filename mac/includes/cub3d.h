@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:15:15 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/09 03:52:28 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/10 14:56:22 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,6 +316,8 @@ int						ft_errorfree(const char *error, char *str,
 						t_cubfile *cub, int m);
 int						ft_freemap(const char *error, int h_map,
 						char *str, t_cubfile *cub);
+int						ft_freereturn(const char *error, int code,
+						t_cubfile *cub);
 void					*create_new_image(t_cubfile *cub, int nb);
 
 #endif

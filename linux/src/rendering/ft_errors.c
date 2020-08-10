@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/09 02:48:28 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/09 03:51:54 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/10 14:59:58 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int				ft_errorbas(const char *error, t_cubfile *cub)
 	return (0);
 }
 
-int				free_txpath(t_cubfile *cub)
+int				ft_errorfree(const char *error, char *str,
+		t_cubfile *cub, int m)
 {
 	int			i;
 
@@ -35,13 +36,6 @@ int				free_txpath(t_cubfile *cub)
 	while (++i < 5)
 		if (cub->tx_path[i])
 			free(cub->tx_path[i]);
-	return (0);
-}
-
-int				ft_errorfree(const char *error, char *str,
-		t_cubfile *cub, int m)
-{
-	free_txpath(cub);
 	if (str)
 		free(str);
 	free(cub->mlx.mlx);
@@ -63,10 +57,27 @@ int				ft_freemap(const char *error, int h_map,
 		free(cub->map[i]);
 	if (str)
 		free(str);
-	free_txpath(cub);
+	i = -1;
+	while (++i < 5)
+		if (cub->tx_path[i])
+			free(cub->tx_path[i]);
 	free(cub->map);
 	free(cub->mlx.mlx);
 	write(1, "Error:\n", 7);
 	write(1, error, ft_strlen(error));
+	return (0);
+}
+
+int				ft_freereturn(const char *error, int code, t_cubfile *cub)
+{
+	int			i;
+
+	i = -1;
+	while (++i < 5)
+		if (cub->tex[i].img)
+			mlx_destroy_image(cub->mlx.mlx, cub->tex[i].img);
+	ft_freemap(error, cub->d_map.h - 1, NULL, cub);
+	if (code == 2)
+		free(cub->sprite);
 	return (0);
 }

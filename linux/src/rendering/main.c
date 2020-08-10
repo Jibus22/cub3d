@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 18:44:30 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/09 03:09:23 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/10 14:58:35 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,20 @@ int				init_cub(t_cubfile *c)
 	i = -1;
 	while (++i < 5)
 	{
+		c->tex[i].img = NULL;
 		if (!(c->tex[i].img = mlx_xpm_file_to_image(c->mlx.mlx,
 						c->tx_path[i], &(c->tex[i].w),
 						&(c->tex[i].h))))
-			return (ft_freemap("Couldn't load xpm", c->d_map.h - 1, NULL, c));
+			return (ft_freereturn("Couldn't load xpm", 0, c));
 		c->tex[i].adr = mlx_get_data_addr(c->tex[i].img,
 				&(c->tex[i].depth), &(c->tex[i].size_line),
 				&(c->tex[i].endian));
 	}
 	if (!(c->sprite = (t_sprite*)malloc(sizeof(*(c->sprite)) *
 					c->sprite_nb)))
-		return (ft_error("Couldn't malloc sprites"));
+		return (ft_freereturn("Couldn't malloc sprites", 0, c));
 	if (!(create_new_image(c, 1)))
-		return (ft_error("Couldn't create mlx image"));
+		return (ft_freereturn("Couldn't create mlx image", 2, c));
 	return (1);
 }
 
@@ -106,7 +107,7 @@ int				main(int ac, char **av)
 	}
 	if (!(cub.mlx.win = mlx_new_window(cub.mlx.mlx,
 					cub.res.w, cub.res.h, av[1])))
-		return (ft_error("Failed to create mlx window"));
+		return (ft_freemap("mlx win failed", cub.d_map.h - 1, NULL, &cub));
 	mlx_hook(cub.mlx.win, KEYPRESS, 1L << 0, key_event, &cub);
 	mlx_hook(cub.mlx.win, DESTROYNOTIFY, 0, quit_cub, &cub);
 	mlx_hook(cub.mlx.win, 15, 1L << 16, refresh, &cub);
