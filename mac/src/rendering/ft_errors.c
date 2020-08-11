@@ -6,7 +6,7 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/09 02:48:28 by jle-corr          #+#    #+#             */
-/*   Updated: 2020/08/11 15:27:06 by jle-corr         ###   ########.fr       */
+/*   Updated: 2020/08/11 17:10:43 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int				ft_freereturn(const char *error, int code, t_cubfile *cub)
 	while (++i < 5)
 	{
 		if (!cub->tex[i].img)
-			break;
+			break ;
 		else
 			mlx_destroy_image(cub->mlx.mlx, cub->tex[i].img);
 	}
