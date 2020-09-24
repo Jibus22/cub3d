@@ -13,9 +13,9 @@ cub3D
 
 :exploding_head: Main tutorials :exploding_head:
 
-# https://permadi.com/1996/05/ray-casting-tutorial-table-of-contents/ 
-# https://lodev.org/cgtutor/raycasting.html
-# https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html
+* https://permadi.com/1996/05/ray-casting-tutorial-table-of-contents/ 
+* https://lodev.org/cgtutor/raycasting.html
+* https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html
 
 ---
 
